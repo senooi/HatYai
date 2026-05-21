@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penang to Hatyai: Healthy Travel Infographic with Gemini AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-top: 6px solid;
+        }
+        .border-t-sky { border-top-color: #0ea5e9; }
+        .border-t-emerald { border-top-color: #10b981; }
+        .border-t-amber { border-top-color: #f59e0b; }
+        .border-t-rose { border-top-color: #f43f5e; }
+        .border-t-violet { border-top-color: #8b5cf6; }
+        
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #94a3b8;
+            padding: 1rem;
+        }
+        @media (max-width: 767px) {
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+        #map {
+            z-index: 1;
+            border-radius: 0.75rem;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vibrant: {
+                            sky: '#0ea5e9',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e',
+                            violet: '#8b5cf6',
+                            dark: '#1e293b',
+                            light: '#f1f5f9'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="antialiased pb-24">
+
+    <header class="bg-vibrant-dark text-white pt-20 pb-16 px-6 text-center border-b-8 border-vibrant-sky shadow-lg">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">Hatyai Wellness Escape</h1>
+            <p class="text-xl md:text-3xl font-light text-sky-200 mb-8">From Penang to Thailand: The Ultimate Low-Cholesterol Travel Guide</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="bg-vibrant-rose text-white px-4 py-1.5 rounded-full font-bold text-sm shadow-md">&#10084;&#65039; Heart-Healthy</span>
+                <span class="bg-vibrant-amber text-white px-4 py-1.5 rounded-full font-bold text-sm shadow-md">&#127927; Jazz Festival</span>
+                <span class="bg-vibrant-emerald text-white px-4 py-1.5 rounded-full font-bold text-sm shadow-md">&#128662; Optimized Transit</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+        
+        <section class="card border-t-sky">
+            <header class="mb-8 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
+                    <span class="text-4xl">&#128644;</span> Phase 1: The Journey
+                </h2>
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    Traveling from Penang to Hatyai offers multiple distinct pathways. Based on the transportation brief, optimizing for both budget and time is crucial. The chart below cross-analyzes the average transit duration against the estimated base cost per passenger for the three primary modes of border crossing.
+                </p>
+            </header>
+            
+            <div class="chart-container mb-6">
+                <canvas id="transportChart"></canvas>
+            </div>
+            
+            <div class="bg-sky-50 rounded-xl p-5 border border-sky-100 flex flex-col sm:flex-row gap-4 items-center">
+                <div class="text-4xl bg-white p-3 rounded-full shadow-sm">&#128161;</div>
+                <p class="text-sm text-vibrant-dark font-medium">
+                    <strong class="text-vibrant-sky text-base">Key Takeaway:</strong> Shared Minivans provide the optimal balance, offering the fastest common route (approx. 3.5 - 4 hours) directly from KOMTAR to downtown Hatyai at a moderate price. The KTM Train is the ultimate budget choice but demands more transit time.
+                </p>
+            </div>
+        </section>
+
+        <section class="card border-t-emerald">
+            <header class="mb-8 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
+                    <span class="text-4xl">&#127976;</span> Phase 2: Basecamp Walkability
+                </h2>
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    Hotel location dictates your daily physical activity. Downtown boutique hotels offer immediate pedestrian access to crucial health-focused markets, whereas suburban retreats like Subanan prioritize quiet recovery over foot traffic.
+                </p>
+            </header>
+
+            <div class="chart-container mb-6">
+                <canvas id="walkabilityChart"></canvas>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-100">
+                    <h4 class="font-bold text-emerald-800 text-lg mb-2">Downtown Advantage</h4>
+                    <p class="text-sm text-gray-700">Hotels like <strong>The Bed Hatyai</strong> and <strong>Tone Hotel</strong> allow you to complete your morning step goals simply by walking to Kim Yong Market or local Khao Tom restaurants under 10 minutes.</p>
+                </div>
+                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                    <h4 class="font-bold text-slate-800 text-lg mb-2">Suburban Recovery</h4>
+                    <p class="text-sm text-gray-700"><strong>Subanan Hotel</strong> isolates you from downtown noise for premium sleep quality, but mandates a 15-minute Grab ride to reach the urban core, negating incidental walking.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card border-t-amber">
+            <header class="mb-8 text-center">
+                <h2 class="text-3xl font-bold text-vibrant-dark mb-3">
+                    <span class="text-4xl">&#128722;</span> Hybrid Transit Strategy
+                </h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+                    To maintain the quiet benefits of a suburban hotel while keeping travel costs low, the itinerary utilizes a highly efficient "Grab + Shuttle" hybrid workflow for navigating the Jazz Festival and downtown markets.
+                </p>
+            </header>
+
+            <div class="flex flex-col md:flex-row items-center justify-between bg-amber-50 p-6 md:p-10 rounded-2xl border-2 border-amber-100">
+                
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-sky">
+                    <span class="text-5xl mb-3">&#128662;</span>
+                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">1. Suburban Link</h3>
+                    <p class="text-sm text-gray-500">Take a quick Grab from Subanan Hotel to the downtown perimeter.</p>
+                    <span class="mt-3 bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">Cost: ~80 THB</span>
+                </div>
+
+                <div class="flow-arrow">&#10142;</div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-rose">
+                    <span class="text-5xl mb-3">&#128652;</span>
+                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">2. Free Shuttle</h3>
+                    <p class="text-sm text-gray-500">Board the Route 1 (Red Line) Shuttle at Chue Chang or Kim Yong stops.</p>
+                    <span class="mt-3 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full">Cost: 0 THB (Free)</span>
+                </div>
+
+                <div class="flow-arrow">&#10142;</div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-emerald">
+                    <span class="text-5xl mb-3">&#127927;</span>
+                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">3. Destination</h3>
+                    <p class="text-sm text-gray-500">Arrive directly at the Jazz Festival (Thammanoonvithi Park) or night markets.</p>
+                    <span class="mt-3 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">High Convenience</span>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="card border-t-violet">
+            <header class="mb-8 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
+                    <span class="text-4xl">&#128506;&#65039;</span> Hatyai 4D3N Interactive Route Map & Wellness Guide
+                </h2>
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    Explore all planned locations from your 4-Day Low-Cholesterol Itinerary. Select any point of interest from the sidebar to zoom on the map, read descriptions, and easily launch direct navigation with official Google Maps pins.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="lg:col-span-2 h-[450px] relative">
+                    <div id="map" class="w-full h-full border border-slate-200 shadow-md"></div>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-4 h-[450px] flex flex-col">
+                    <h3 class="font-bold text-vibrant-dark mb-3 text-base flex items-center gap-2 border-b pb-2">
+                        <span>📍</span> Select Itinerary Location
+                    </h3>
+                    <div id="location-list" class="flex-grow overflow-y-auto space-y-2 pr-1"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <button onclick="switchAITab('meal')" id="tab-meal" class="py-3 px-4 rounded-xl font-bold text-sm bg-vibrant-violet text-white transition-all shadow-sm">
+                    ✨ Meal Cholesterol Analysis
+                </button>
+                <button onclick="switchAITab('scanner')" id="tab-scanner" class="py-3 px-4 rounded-xl font-bold text-sm bg-white text-gray-700 border border-slate-200 transition-all hover:bg-slate-50">
+                    ✨ AI Food Image Scanner
+                </button>
+                <button onclick="switchAITab('itinerary')" id="tab-itinerary" class="py-3 px-4 rounded-xl font-bold text-sm bg-white text-gray-700 border border-slate-200 transition-all hover:bg-slate-50">
+                    ✨ Smart Personal Itinerary
+                </button>
+            </div>
+
+            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <div id="ai-panel-meal" class="ai-panel space-y-4">
+                    <h3 class="text-xl font-bold text-vibrant-dark">Southern Thai Meal Cholesterol Analysis</h3>
+                    <p class="text-sm text-gray-500">Enter the name of the dish you'd like to eat in Hat Yai (e.g., Khao Yum, Gaeng Som, or Hat Yai Fried Chicken) to let Gemini analyze your cardiovascular risk and suggest healthier alternatives.</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="meal-input" placeholder="e.g., Gaeng Tai Pla, Deep-Fried Pork Belly, Hat Yai Fried Chicken..." class="flex-grow p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-vibrant-violet">
+                        <button onclick="analyzeMeal()" class="bg-vibrant-violet text-white px-6 py-3 rounded-xl font-bold hover:bg-violet-700 transition-all">✨ Analyze Meal</button>
+                    </div>
+                </div>
+
+                <div id="ai-panel-scanner" class="ai-panel hidden space-y-4">
+                    <h3 class="text-xl font-bold text-vibrant-dark">Upload Food Image to Scan Nutrition</h3>
+                    <p class="text-sm text-gray-500">Take or upload a photo of your meal. The system will detect key ingredients, estimate your cholesterol risk percentage, and rate how heart-friendly it is.</p>
+                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-xl p-6 bg-white">
+                        <input type="file" id="image-input" accept="image/*" onchange="previewImage(event)" class="hidden">
+                        <label for="image-input" class="cursor-pointer flex flex-col items-center gap-2">
+                            <span class="text-4xl">&#128248;</span>
+                            <span class="text-sm font-semibold text-vibrant-violet">Click here to upload or take a photo</span>
+                            <span class="text-xs text-gray-400">Supports all standard image formats</span>
+                        </label>
+                        <img id="image-preview" class="max-h-48 rounded-lg mt-4 hidden shadow-md">
+                    </div>
+                    <button onclick="analyzeFoodImage()" class="w-full bg-vibrant-violet text-white py-3 rounded-xl font-bold hover:bg-violet-700 transition-all">✨ Start AI Image Analysis</button>
+                </div>
+
+                <div id="ai-panel-itinerary" class="ai-panel hidden space-y-4">
+                    <h3 class="text-xl font-bold text-vibrant-dark">Smart Itinerary Personalization</h3>
+                    <p class="text-sm text-gray-500">Tell us your preferences (e.g., budget trip, less walking, shopping-focused, or adding spa activities) and the AI will tailor your itinerary instantly.</p>
+                    <textarea id="itinerary-prompt" rows="3" placeholder="e.g., I want a trip focused on walking in shopping malls during the afternoon to escape the heat, and low-cholesterol street food near Kim Yong Market..." class="w-full p-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-vibrant-violet"></textarea>
+                    <button onclick="personalizeItinerary()" class="w-full bg-vibrant-violet text-white py-3 rounded-xl font-bold hover:bg-violet-700 transition-all">✨ Generate Personal Itinerary</button>
+                </div>
+
+                <div id="ai-loading" class="hidden mt-6 flex flex-col items-center justify-center space-y-3">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-vibrant-violet"></div>
+                    <p class="text-sm text-gray-500">Gemini is analyzing health data for your heart...</p>
+                </div>
+
+                <div id="ai-result" class="hidden mt-6 bg-white p-6 rounded-xl border border-slate-200 shadow-inner max-h-96 overflow-y-auto">
+                    <h4 class="font-extrabold text-vibrant-violet text-lg border-b pb-2 mb-3 flex items-center gap-2">
+                        <span>✨</span> AI Health Assessment Results
+                    </h4>
+                    <div id="ai-result-content" class="text-gray-700 text-sm leading-relaxed whitespace-pre-line"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card border-t-rose mb-10">
+            <header class="mb-8 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
+                    <span class="text-4xl">&#127869;&#65039;</span> Low-Cholesterol Protocol
+                </h2>
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    Thai cuisine offers incredible heart-healthy options if navigated correctly. The itinerary strictly eliminates deep-fried items and heavy coconut creams in favor of high-fiber, steamed, and herbal preparations.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div class="chart-container h-full">
+                    <canvas id="dietChart"></canvas>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4 p-4 rounded-xl bg-emerald-50 border border-emerald-100 transition hover:shadow-md">
+                        <div class="bg-white p-2 rounded-lg text-2xl shadow-sm">&#127807;</div>
+                        <div>
+                            <h4 class="font-bold text-vibrant-dark text-lg">Fresh Herb Salads</h4>
+                            <p class="text-sm text-gray-600"><strong>Khao Yum</strong> at Morning Markets. Packed with raw betel leaves, lemongrass, and pomelo fiber.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl bg-sky-50 border border-sky-100 transition hover:shadow-md">
+                        <div class="bg-white p-2 rounded-lg text-2xl shadow-sm">&#127858;</div>
+                        <div>
+                            <h4 class="font-bold text-vibrant-dark text-lg">Clear Herbal Broths</h4>
+                            <p class="text-sm text-gray-600"><strong>Jim Jum</strong> at Rim Rua Kratha Ron. Oil-free steamboat loaded with local mushrooms and leafy greens.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 p-4 rounded-xl bg-amber-50 border border-amber-100 transition hover:shadow-md">
+                        <div class="bg-white p-2 rounded-lg text-2xl shadow-sm">&#128031;</div>
+                        <div>
+                            <h4 class="font-bold text-vibrant-dark text-lg">Zero-Oil Steamed</h4>
+                            <p class="text-sm text-gray-600"><strong>Pla Neung Manao</strong> at Krua Rim Nam. Lean sea bass steamed in garlic, chili, and fresh lime juice.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const wrapLabel = (label, limit = 16) => {
+            if (label.length <= limit) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 <= limit) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        };
+
+        const globalTooltipConfig = {
+            tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                titleFont: { family: 'Outfit', size: 14, weight: 'bold' },
+                bodyFont: { family: 'Outfit', size: 13 },
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        } else {
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const transCtx = document.getElementById('transportChart').getContext('2d');
+        const transRawLabels = ["Minivan (Direct)", "KTM Train (Budget)", "Private Car (Group)"];
+        const transWrappedLabels = transRawLabels.map(l => wrapLabel(l));
+
+        new Chart(transCtx, {
+            type: 'bar',
+            data: {
+                labels: transWrappedLabels,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Est. Cost per Pax (RM)',
+                        data: [55, 20, 150], 
+                        backgroundColor: '#0ea5e9',
+                        borderRadius: 6,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'line',
+                        label: 'Est. Duration (Hours)',
+                        data: [4, 4.5, 3],
+                        borderColor: '#f59e0b',
+                        backgroundColor: '#f59e0b',
+                        borderWidth: 4,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { font: { family: 'Outfit', size: 13, weight: '600' } }
+                    },
+                    ...globalTooltipConfig
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'Cost (RM)', font: { family: 'Outfit', weight: 'bold' } },
+                        grid: { color: '#f1f5f9' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: 'Time (Hours)', font: { family: 'Outfit', weight: 'bold' } },
+                        grid: { drawOnChartArea: false },
+                        min: 0,
+                        max: 6
+                    },
+                    x: {
+                        ticks: { font: { family: 'Outfit', weight: '600' } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        const walkCtx = document.getElementById('walkabilityChart').getContext('2d');
+        const walkRawLabels = ["The Bed Hatyai", "Hop Inn Downtown", "Tone Hotel", "Subanan Hotel (Grab Req)"];
+        const walkWrappedLabels = walkRawLabels.map(l => wrapLabel(l));
+
+        new Chart(walkCtx, {
+            type: 'bar',
+            data: {
+                labels: walkWrappedLabels,
+                datasets: [{
+                    label: 'Walking Mins to Kim Yong Market',
+                    data: [5, 8, 12, 60],
+                    backgroundColor: [
+                        '#10b981', 
+                        '#10b981', 
+                        '#f59e0b', 
+                        '#f43f5e'  
+                    ],
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    ...globalTooltipConfig
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Minutes (Walking)', font: { family: 'Outfit', weight: 'bold' } },
+                        grid: { color: '#f1f5f9' }
+                    },
+                    y: {
+                        ticks: { font: { family: 'Outfit', weight: '600' } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        const dietCtx = document.getElementById('dietChart').getContext('2d');
+        const dietRawLabels = ["Fresh Raw Fiber (Khao Yum, Fruits)", "Clear Herbal Broth (Jim Jum)", "Zero-Oil Steamed (Pla Neung)", "Skinless Grilled (Gai Yang)"];
+        const dietWrappedLabels = dietRawLabels.map(l => wrapLabel(l));
+
+        new Chart(dietCtx, {
+            type: 'doughnut',
+            data: {
+                labels: dietWrappedLabels,
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: [
+                        '#10b981',
+                        '#0ea5e9',
+                        '#8b5cf6',
+                        '#f59e0b'
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#ffffff',
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { 
+                            font: { family: 'Outfit', size: 13, weight: '500' },
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    },
+                    ...globalTooltipConfig
+                }
+            }
+        });
+
+        const locations = [
+            {
+                name: "Subanan Hotel and Residence",
+                type: "Base / Hotel",
+                coords: [7.0026, 100.4950],
+                desc: "Quiet suburban hotel on Prachayindee Road. Features comfortable modern rooms, a swimming pool, and excellent rest conditions.",
+                link: "https://www.google.com/maps/search/?api=1&query=Subanan+Hotel+and+Residence+Hat+Yai",
+                icon: "🏨",
+                color: "#0ea5e9"
+            },
+            {
+                name: "I AM SALAD (Rajyindee Road)",
+                type: "Healthy Eatery",
+                coords: [7.0015, 100.4855],
+                desc: "A dedicated salad shop offering fantastic grilled tofu salads, lean protein, and clean dressings.",
+                link: "https://www.google.com/maps/search/?api=1&query=I+AM+SALAD+Hat+Yai",
+                icon: "🥗",
+                color: "#10b981"
+            },
+            {
+                name: "Sense2 Hair Salon Massage & Spa",
+                type: "Wellness & Spa",
+                coords: [7.0062, 100.4760],
+                desc: "Extremely clean, modern local spa. Excellent for circulation-boosting Foot and Thai Massages.",
+                link: "https://www.google.com/maps/search/?api=1&query=Sense2+Hair+Salon+Massage+and+Spa+Hat+Yai",
+                icon: "💆",
+                color: "#f43f5e"
+            },
+            {
+                name: "Thammanoonvithi Small Park",
+                type: "Jazz Festival Venue",
+                coords: [7.0060, 100.4815],
+                desc: "Central park venue where you can enjoy local musicians and the live outdoor Jazz Festival.",
+                link: "https://www.google.com/maps/search/?api=1&query=Thammanoonvithi+Small+Park+Hat+Yai",
+                icon: "🎷",
+                color: "#8b5cf6"
+            },
+            {
+                name: "Morning Market (Supasarnrangsan)",
+                type: "Local Market",
+                coords: [7.0105, 100.4765],
+                desc: "The iconic early-morning street market. Great to walk around and buy Khao Yum wrapped in banana leaves.",
+                link: "https://www.google.com/maps/search/?api=1&query=Morning+market+Supasarnrangsan+Hat+Yai",
+                icon: "🛍️",
+                color: "#f59e0b"
+            },
+            {
+                name: "Suan Cheun Suk",
+                type: "Healthy Eatery",
+                coords: [7.0215, 100.4820],
+                desc: "Famous Southern food spot. Order healthy Som Tum (Papaya Salad) and oil-free skinless Gai Yang.",
+                link: "https://www.google.com/maps/search/?api=1&query=Suan+Cheun+Suk+Hat+Yai",
+                icon: "🍗",
+                color: "#10b981"
+            },
+            {
+                name: "Central Hatyai",
+                type: "Indoor Shopping",
+                coords: [6.9972, 100.4845],
+                desc: "Great modern shopping complex. Features cool indoor walkways to escape afternoon heat and get your steps in.",
+                link: "https://www.google.com/maps/search/?api=1&query=Central+Hatyai",
+                icon: "🏬",
+                color: "#f59e0b"
+            },
+            {
+                name: "Diana Complex Shopping Center",
+                type: "Indoor Shopping",
+                coords: [7.0018, 100.4812],
+                desc: "Multi-level retro-modern indoor mall with comfortable corridors for indoor pacing.",
+                link: "https://www.google.com/maps/search/?api=1&query=Diana+Complex+Shopping+Center+Hat+Yai",
+                icon: "🏢",
+                color: "#f59e0b"
+            },
+            {
+                name: "Lee Gardens Plaza",
+                type: "Indoor Shopping",
+                coords: [7.0086, 100.4714],
+                desc: "The heart of Hat Yai's downtown core. Connected to indoor souvenir lanes and covered dry food stalls.",
+                link: "https://www.google.com/maps/search/?api=1&query=Lee+Gardens+Plaza+Hat+Yai",
+                icon: "🏢",
+                color: "#f59e0b"
+            },
+            {
+                name: "Rim Rua Kratha Ron Restaurant",
+                type: "Healthy Eatery",
+                coords: [7.0035, 100.5015],
+                desc: "High-quality herbal clear broth claypot steamboat (Jim Jum) located on the eastern canal side, near your hotel.",
+                link: "https://www.google.com/maps/search/?api=1&query=Rim+Rua+Kratha+Ron+Restaurant+buffet+Hat+Yai",
+                icon: "🍲",
+                color: "#10b981"
+            },
+            {
+                name: "Krua Rim Nam Restaurant",
+                type: "Healthy Eatery",
+                coords: [7.0210, 100.4625],
+                desc: "Peaceful riverside setting. Excellent spot for low-cholesterol Pla Neung Manao (Steamed Sea Bass).",
+                link: "https://www.google.com/maps/search/?api=1&query=Krua+Rim+Nam+Restaurant+Hat+Yai",
+                icon: "🐟",
+                color: "#10b981"
+            }
+        ];
+
+        let map;
+        let markers = [];
+
+        window.onload = function() {
+            map = L.map('map').setView([7.0060, 100.4815], 13);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            }).addTo(map);
+
+            const listContainer = document.getElementById('location-list');
+
+            locations.forEach((loc, index) => {
+                const markerIcon = L.divIcon({
+                    className: 'custom-div-icon',
+                    html: `<div class="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center text-white text-sm" style="background-color: ${loc.color}">${loc.icon}</div>`,
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 32],
+                    popupAnchor: [0, -32]
+                });
+
+                const marker = L.marker(loc.coords, { icon: markerIcon }).addTo(map);
+                
+                const popupContent = `
+                    <div class="p-2 max-w-xs font-sans">
+                        <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full text-white inline-block mb-1" style="background-color: ${loc.color}">
+                            ${loc.type}
+                        </span>
+                        <h4 class="font-bold text-slate-800 text-sm mt-1">${loc.name}</h4>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">${loc.desc}</p>
+                        <a href="${loc.link}" target="_blank" class="mt-3 inline-flex items-center gap-1.5 bg-vibrant-dark text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-slate-700 transition-all">
+                            Open in Google Maps 📍
+                        </a>
+                    </div>
+                `;
+                
+                marker.bindPopup(popupContent);
+                markers.push(marker);
+
+                const itemBtn = document.createElement('button');
+                itemBtn.className = "w-full text-left p-3 rounded-lg border border-slate-100 hover:border-slate-300 transition-all flex items-center gap-3 bg-slate-50 hover:bg-white";
+                itemBtn.onclick = () => focusLocation(index);
+                itemBtn.innerHTML = `
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm text-white shrink-0" style="background-color: ${loc.color}">
+                        ${loc.icon}
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xs text-slate-800">${loc.name}</h4>
+                        <span class="text-[10px] text-slate-500 font-semibold">${loc.type}</span>
+                    </div>
+                `;
+                listContainer.appendChild(itemBtn);
+            });
+        };
+
+        function focusLocation(index) {
+            const loc = locations[index];
+            map.flyTo(loc.coords, 15, { duration: 1.5 });
+            setTimeout(() => {
+                markers[index].openPopup();
+            }, 1600);
+        }
+
+        function switchAITab(tabId) {
+            document.querySelectorAll('.ai-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`ai-panel-${tabId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+                btn.className = "py-3 px-4 rounded-xl font-bold text-sm bg-white text-gray-700 border border-slate-200 transition-all hover:bg-slate-50";
+            });
+            document.getElementById(`tab-${tabId}`).className = "py-3 px-4 rounded-xl font-bold text-sm bg-vibrant-violet text-white transition-all shadow-sm";
+        }
+
+        let selectedBase64Image = "";
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('image-preview');
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+                selectedBase64Image = e.target.result.split(',')[1];
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function executeGeminiRequest(payload) {
+            const apiKey = "";
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            let delay = 1000;
+            
+            for (let attempt = 0; attempt < 5; attempt++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                } catch (error) {}
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            }
+            throw new Error("We're sorry, but we cannot connect to the Gemini AI service right now. Please try again later.");
+        }
+
+        async function analyzeMeal() {
+            const mealName = document.getElementById('meal-input').value.trim();
+            if (!mealName) {
+                showResult("Please enter a dish name before analyzing.");
+                return;
+            }
+            showLoading(true);
+
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: `Act as a heart-health and nutrition expert. Analyze the cholesterol level and heart-friendliness of this Southern Thai dish: "${mealName}"
+                        Analyze according to these guidelines:
+                        1. Assess cardiac risk and cholesterol levels (Risk: Low / Medium / High)
+                        2. Clarify key ingredients affecting cholesterol levels
+                        3. Recommend healthier Southern Thai alternatives
+                        4. Respond in English with a friendly and engaging tone.`
+                    }]
+                }]
+            };
+
+            try {
+                const data = await executeGeminiRequest(payload);
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to retrieve results.";
+                showResult(aiResponse);
+            } catch (error) {
+                showResult(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function analyzeFoodImage() {
+            if (!selectedBase64Image) {
+                showResult("Please select a food photo before scanning.");
+                return;
+            }
+            showLoading(true);
+
+            const fileInput = document.getElementById('image-input');
+            const file = fileInput.files[0];
+
+            const payload = {
+                contents: [{
+                    parts: [
+                        { text: "Please analyze this food image or ingredients. Estimate the cholesterol level, rate its heart-friendliness (scale 1 to 10), explain the key visible ingredients, and suggest healthier alternatives. Please respond in English with a friendly tone." },
+                        { inlineData: { mimeType: file.type, data: selectedBase64Image } }
+                    ]
+                }]
+            };
+
+            try {
+                const data = await executeGeminiRequest(payload);
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to process image.";
+                showResult(aiResponse);
+            } catch (error) {
+                showResult(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function personalizeItinerary() {
+            const prompt = document.getElementById('itinerary-prompt').value.trim();
+            if (!prompt) {
+                showResult("Please enter your trip preferences first.");
+                return;
+            }
+            showLoading(true);
+
+            const payload = {
+                contents: [{
+                    parts: [{
+                        text: `Act as a wellness travel planner. Analyze this trip request: "${prompt}"
+                        Please personalize or suggest a Hat Yai itinerary focused on heart health, low-cholesterol dining, and satisfying the preferences mentioned above. Recommend safe, heart-friendly locations in Hat Yai and structure them step-by-step in English with a polite tone.`
+                    }]
+                }]
+            };
+
+            try {
+                const data = await executeGeminiRequest(payload);
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to retrieve itinerary.";
+                showResult(aiResponse);
+            } catch (error) {
+                showResult(error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function showLoading(isLoading) {
+            const loader = document.getElementById('ai-loading');
+            const resultBox = document.getElementById('ai-result');
+            if (isLoading) {
+                loader.classList.remove('hidden');
+                resultBox.classList.add('hidden');
+            } else {
+                loader.classList.add('hidden');
+            }
+        }
+
+        function showResult(text) {
+            const resultBox = document.getElementById('ai-result');
+            const resultContent = document.getElementById('ai-result-content');
+            resultContent.innerText = text;
+            resultBox.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
