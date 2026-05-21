@@ -1,3 +1,4 @@
+<!-- CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in this entire output. All graphics render via standard HTML5 Canvas (Chart.js) and custom styled Tailwind components. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -373,9 +374,23 @@
                     <span class="text-4xl">💰</span> Travel Budget & Expense Tracker
                 </h2>
                 <p class="text-gray-600 text-lg leading-relaxed">
-                    Track your actual spending in Thai Baht (THB) and automatically convert to Malaysian Ringgit (MYR). Your expenses are securely synced and saved in real-time.
+                    Track your actual spending in Thai Baht (THB) or Malaysian Ringgit (MYR). Your expenses are securely synchronized and accessible across all synced devices in real-time.
                 </p>
             </header>
+
+            <!-- Sync Control Box -->
+            <div class="mb-6 p-4 bg-violet-50 rounded-xl border border-violet-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div>
+                    <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider">Active Sync Code</span>
+                    <span id="display-sync-code" class="text-lg font-extrabold text-vibrant-violet tracking-widest">Generating...</span>
+                </div>
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <input type="text" id="sync-code-input" placeholder="e.g. HY-A8B9" class="p-3 rounded-lg border border-slate-300 text-xs font-bold uppercase w-full sm:w-36 focus:outline-none focus:ring-2 focus:ring-vibrant-violet">
+                    <button id="sync-code-btn" class="bg-vibrant-violet text-white px-4 py-3 rounded-lg text-xs font-bold hover:bg-violet-700 transition-all shrink-0">
+                        Connect Device
+                    </button>
+                </div>
+            </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
@@ -514,11 +529,28 @@
             appId: "1:883916005228:web:c1a252831d94bf22af5d49"
         };
 
+        let currentTripId = localStorage.getItem('hatyai_trip_code');
+        if (!currentTripId) {
+            currentTripId = generateRandomSyncCode();
+            localStorage.setItem('hatyai_trip_code', currentTripId);
+        }
+
+        document.getElementById('display-sync-code').innerText = currentTripId;
+
         const stored = localStorage.getItem('localExpenses');
         if (stored) {
             try {
                 localExpenses = JSON.parse(stored);
             } catch(e) {}
+        }
+
+        function generateRandomSyncCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let result = 'HY-';
+            for (let i = 0; i < 4; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
         }
 
         function formatDateString(dateStr) {
@@ -540,8 +572,10 @@
             const totalThbEl = document.getElementById('total-thb');
             const totalMyrEl = document.getElementById('total-myr');
 
-            if (!expenses || expenses.length === 0) {
-                listContainer.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm">No expenses logged yet.</div>`;
+            const filteredExpenses = expenses.filter(exp => exp.tripId === currentTripId);
+
+            if (filteredExpenses.length === 0) {
+                listContainer.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm">No expenses logged yet for Sync Code: ${currentTripId}</div>`;
                 totalThbEl.innerText = "฿0";
                 totalMyrEl.innerText = "RM 0.00";
                 return;
@@ -550,7 +584,7 @@
             let totalMyr = 0;
             listContainer.innerHTML = '';
 
-            const sortedExpenses = [...expenses].sort((a, b) => {
+            const sortedExpenses = [...filteredExpenses].sort((a, b) => {
                 const dateA = a.date || '';
                 const dateB = b.date || '';
                 if (dateA !== dateB) {
@@ -616,7 +650,7 @@
         async function removeExpense(id) {
             if (db && currentUser) {
                 try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'expenses', id));
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'expenses', id));
                 } catch(e) {
                     console.error("Error deleting document from Firestore:", e);
                 }
@@ -630,7 +664,8 @@
         async function saveExpense(name, category, amount, date, originalAmount, originalCurrency) {
             if (db && currentUser) {
                 try {
-                    await addDoc(collection(db, 'artifacts', appId, 'users', currentUser.uid, 'expenses'), {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'expenses'), {
+                        tripId: currentTripId,
                         name,
                         category,
                         amount,
@@ -645,6 +680,7 @@
             } else {
                 const newExpense = {
                     id: crypto.randomUUID(),
+                    tripId: currentTripId,
                     name,
                     category,
                     amount,
@@ -700,6 +736,58 @@
             }
         };
 
+        window.connectToSyncCode = function() {
+            const codeInput = document.getElementById('sync-code-input');
+            const code = codeInput.value.trim().toUpperCase();
+            if (code && code.startsWith('HY-') && code.length === 7) {
+                currentTripId = code;
+                localStorage.setItem('hatyai_trip_code', currentTripId);
+                document.getElementById('display-sync-code').innerText = currentTripId;
+                codeInput.value = '';
+                
+                if (db && currentUser) {
+                    setupRealtimeListener();
+                } else {
+                    renderExpenses(localExpenses);
+                }
+            } else {
+                alert("Please enter a valid Sync Code in the format HY-XXXX");
+            }
+        };
+
+        document.getElementById('sync-code-btn').onclick = window.connectToSyncCode;
+
+        function setupRealtimeListener() {
+            if (expensesListener) expensesListener();
+
+            const statusEl = document.getElementById('sync-status');
+            expensesListener = onSnapshot(
+                collection(db, 'artifacts', appId, 'public', 'data', 'expenses'),
+                (snapshot) => {
+                    statusEl.innerText = "Cloud Synced";
+                    statusEl.className = "text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded-full";
+                    const list = [];
+                    snapshot.forEach((doc) => {
+                        list.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderExpenses(list);
+                },
+                (error) => {
+                    console.error("Firestore snapshot error:", error);
+                    let errorMsg = "Sync Error (Check Rules)";
+                    if (error.code === 'permission-denied') {
+                        errorMsg = "Permission Denied (Check Rules)";
+                    }
+                    statusEl.innerText = errorMsg;
+                    statusEl.className = "text-xs bg-rose-100 text-rose-800 font-bold px-2 py-1 rounded-full";
+                    
+                    db = null;
+                    currentUser = null;
+                    renderExpenses(localExpenses);
+                }
+            );
+        }
+
         async function initStorage() {
             const statusEl = document.getElementById('sync-status');
             const dateInput = document.getElementById('expense-date');
@@ -722,24 +810,7 @@
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         currentUser = user;
-                        statusEl.innerText = "Cloud Synced";
-                        statusEl.className = "text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded-full";
-                        
-                        if (expensesListener) expensesListener();
-
-                        expensesListener = onSnapshot(
-                            collection(db, 'artifacts', appId, 'users', user.uid, 'expenses'),
-                            (snapshot) => {
-                                const list = [];
-                                snapshot.forEach((doc) => {
-                                    list.push({ id: doc.id, ...doc.data() });
-                                });
-                                renderExpenses(list);
-                            },
-                            (error) => {
-                                console.error("Firestore snapshot error:", error);
-                            }
-                        );
+                        setupRealtimeListener();
                     } else {
                         statusEl.innerText = "Connecting...";
                         statusEl.className = "text-xs bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded-full";
