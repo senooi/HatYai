@@ -7,7 +7,7 @@
     <title>Penang to Hatyai: Healthy Travel Infographic with Gemini AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
@@ -32,23 +32,39 @@
         }
         .card {
             background-color: #ffffff;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+            padding: 2.25rem;
             margin-bottom: 2rem;
-            border-top: 6px solid;
+            border: 1px solid rgba(241, 245, 249, 0.8);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .border-t-sky { border-top-color: #0ea5e9; }
-        .border-t-emerald { border-top-color: #10b981; }
-        .border-t-amber { border-top-color: #f59e0b; }
-        .border-t-rose { border-top-color: #f43f5e; }
-        .border-t-violet { border-top-color: #8b5cf6; }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.06), 0 1px 5px rgba(0, 0, 0, 0.03);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: currentColor;
+        }
+        .accent-sky::before { color: #0ea5e9; }
+        .accent-emerald::before { color: #10b981; }
+        .accent-amber::before { color: #f59e0b; }
+        .accent-rose::before { color: #f43f5e; }
+        .accent-violet::before { color: #8b5cf6; }
         
         .flow-arrow {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.75rem;
             color: #94a3b8;
             padding: 1rem;
         }
@@ -59,7 +75,34 @@
         }
         #map {
             z-index: 1;
-            border-radius: 0.75rem;
+            border-radius: 1rem;
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+            border: 1px solid rgba(226, 232, 240, 0.8) !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+        .leaflet-popup-tip {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important;
+        }
+        .custom-div-icon {
+            background: none !important;
+            border: none !important;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
     <script>
@@ -73,268 +116,301 @@
                             amber: '#f59e0b',
                             rose: '#f43f5e',
                             violet: '#8b5cf6',
-                            dark: '#1e293b',
-                            light: '#f1f5f9'
+                            dark: '#0f172a',
+                            light: '#f8fafc'
                         }
+                    },
+                    boxShadow: {
+                        'modern': '0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02)',
+                        'glow': '0 0 20px rgba(139, 92, 246, 0.15)'
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="antialiased pb-24">
+<body class="antialiased pb-24 bg-[#fafbfd]">
 
-    <header class="bg-vibrant-dark text-white pt-20 pb-16 px-6 text-center border-b-8 border-vibrant-sky shadow-lg">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">Hatyai Wellness Escape</h1>
-            <p class="text-xl md:text-3xl font-light text-sky-200 mb-8">From Penang to Thailand: The Ultimate Low-Cholesterol Travel Guide</p>
+    <div class="absolute top-0 left-0 right-0 h-[600px] bg-gradient-to-b from-sky-50/40 via-violet-50/10 to-transparent -z-10 pointer-events-none"></div>
+    <div class="absolute top-[200px] left-1/4 w-96 h-96 bg-vibrant-sky/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+    <div class="absolute top-[400px] right-1/4 w-96 h-96 bg-vibrant-violet/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+
+    <header class="relative bg-vibrant-dark text-white pt-24 pb-20 px-6 text-center overflow-hidden border-b border-slate-800">
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-vibrant-sky/20 to-vibrant-violet/20 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="relative max-w-4xl mx-auto z-10">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-5 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-sky-200">Hatyai Wellness Escape</h1>
+            <p class="text-lg md:text-2xl font-light text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">The Ultimate Heart-Healthy & Low-Cholesterol Travel Guide from Penang</p>
             <div class="flex flex-wrap justify-center gap-3">
-                <span class="bg-vibrant-rose text-white px-4 py-1.5 rounded-full font-bold text-sm shadow-md">&#10084;&#65039; Heart-Healthy</span>
-                <span class="bg-vibrant-amber text-white px-4 py-1.5 rounded-full font-bold text-sm shadow-md">&#127927; Jazz Festival</span>
-                <span class="bg-vibrant-emerald text-white px-4 py-1.5 rounded-full font-bold text-sm shadow-md">&#128662; Optimized Transit</span>
+                <span class="inline-flex items-center gap-1.5 bg-vibrant-rose/10 text-vibrant-rose border border-vibrant-rose/20 px-4 py-2 rounded-full font-semibold text-xs tracking-wider uppercase shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-vibrant-rose animate-pulse"></span> Heart-Healthy
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-vibrant-amber/10 text-vibrant-amber border border-vibrant-amber/20 px-4 py-2 rounded-full font-semibold text-xs tracking-wider uppercase shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-vibrant-amber"></span> Jazz Festival
+                </span>
+                <span class="inline-flex items-center gap-1.5 bg-vibrant-emerald/10 text-vibrant-emerald border border-vibrant-emerald/20 px-4 py-2 rounded-full font-semibold text-xs tracking-wider uppercase shadow-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-vibrant-emerald"></span> Optimized Transit
+                </span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10">
         
-        <section class="card border-t-sky">
-            <header class="mb-6 text-center md:text-left">
-                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
-                    <span class="text-4xl">&#128197;</span> 4D3N Wellness Itinerary Explorer
+        <!-- Section 1: Itinerary Explorer -->
+        <section class="card accent-sky">
+            <header class="mb-8 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                    <span class="text-sm font-extrabold text-vibrant-sky tracking-widest uppercase bg-vibrant-sky/10 px-3 py-1 rounded-md">Phase 1</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-vibrant-dark tracking-tight mb-3">
+                    4D3N Wellness Itinerary Explorer
                 </h2>
-                <p class="text-gray-600 text-lg leading-relaxed">
-                    Interactive daily schedule engineered for low cholesterol, natural active steps, and premium recovery. Select any day to view activities, and click the map icon next to any event to locate it instantly on our smart route planner.
+                <p class="text-slate-500 text-base md:text-lg leading-relaxed max-w-4xl">
+                    An interactive daily schedule engineered for low cholesterol, natural active steps, and premium recovery. Select any day to view activities, and click the map icon next to any event to locate it instantly.
                 </p>
             </header>
 
-            <div class="flex border-b border-slate-200 mb-6 overflow-x-auto gap-2">
-                <button onclick="switchDayTab(1)" id="day-tab-1" class="py-3 px-6 text-base font-bold rounded-t-lg transition-all border-b-2 border-vibrant-sky bg-sky-50 text-vibrant-sky shrink-0">
+            <div class="bg-slate-100/80 p-1.5 rounded-2xl flex gap-1 mb-8 overflow-x-auto">
+                <button onclick="switchDayTab(1)" id="day-tab-1" class="py-3 px-6 text-sm font-bold rounded-xl transition-all duration-300 bg-white text-vibrant-sky shadow-sm shrink-0">
                     Day 1: Arrival & Jazz
                 </button>
-                <button onclick="switchDayTab(2)" id="day-tab-2" class="py-3 px-6 text-base font-bold rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50 shrink-0">
+                <button onclick="switchDayTab(2)" id="day-tab-2" class="py-3 px-6 text-sm font-semibold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800 shrink-0">
                     Day 2: Markets & Music
                 </button>
-                <button onclick="switchDayTab(3)" id="day-tab-3" class="py-3 px-6 text-base font-bold rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50 shrink-0">
+                <button onclick="switchDayTab(3)" id="day-tab-3" class="py-3 px-6 text-sm font-semibold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800 shrink-0">
                     Day 3: Indoor Walk & Dine
                 </button>
-                <button onclick="switchDayTab(4)" id="day-tab-4" class="py-3 px-6 text-base font-bold rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50 shrink-0">
+                <button onclick="switchDayTab(4)" id="day-tab-4" class="py-3 px-6 text-sm font-semibold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800 shrink-0">
                     Day 4: Souvenirs & Return
                 </button>
             </div>
 
             <div id="day-content-1" class="day-panel space-y-4">
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-sky/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🏨</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">🏨</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-sky uppercase tracking-wider">Morning</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Arrive in Hat Yai & Check-in</h4>
-                            <p class="text-xs text-slate-500">Unpack at Subanan Hotel and Residence. Set up your room fridge with fresh high-fiber snacks.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Arrive in Hat Yai & Check-in</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Unpack at Subanan Hotel and Residence. Set up your room fridge with fresh high-fiber snacks.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Subanan Hotel and Residence')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Subanan Hotel and Residence')" class="bg-white border border-slate-200 hover:border-vibrant-sky hover:text-vibrant-sky px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Base
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-emerald/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🥗</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">🥗</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-emerald uppercase tracking-wider">Lunch</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Heart-Healthy Dining at I AM SALAD</h4>
-                            <p class="text-xs text-slate-500">Walk or grab a quick ride to Rajyindee Road. Fuel up on high-fiber salads and grilled tofu.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Heart-Healthy Dining at I AM SALAD</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Walk or grab a quick ride to Rajyindee Road. Fuel up on high-fiber salads and grilled tofu.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('I AM SALAD (Rajyindee Road)')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('I AM SALAD (Rajyindee Road)')" class="bg-white border border-slate-200 hover:border-vibrant-emerald hover:text-vibrant-emerald px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-rose/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">💆</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">💆</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-rose uppercase tracking-wider">Afternoon</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Circulation Boosting Spa Treatment</h4>
-                            <p class="text-xs text-slate-500">Rejuvenating leg reflexology or classical Thai massage at Sense2 Massage & Spa.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Circulation Boosting Spa Treatment</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Rejuvenating leg reflexology or classical Thai massage at Sense2 Massage & Spa.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Sense2 Hair Salon Massage & Spa')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Sense2 Hair Salon Massage & Spa')" class="bg-white border border-slate-200 hover:border-vibrant-rose hover:text-vibrant-rose px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-violet/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🎷</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">🎷</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-violet uppercase tracking-wider">Evening</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Hatyai Jazz Festival: Night 1</h4>
-                            <p class="text-xs text-slate-500">Ride the free shuttle to Thammanoonvithi Small Park. Enjoy live open-air jazz and organic vendor eats.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Hatyai Jazz Festival: Night 1</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Ride the free shuttle to Thammanoonvithi Small Park. Enjoy live open-air jazz and organic vendor eats.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Thammanoonvithi Small Park')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Thammanoonvithi Small Park')" class="bg-white border border-slate-200 hover:border-vibrant-violet hover:text-vibrant-violet px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
             </div>
 
             <div id="day-content-2" class="day-panel hidden space-y-4">
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-sky/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🛍️</span>
+                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-300">🛍️</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-sky uppercase tracking-wider">Morning</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Active Morning Steps at Supasarnrangsan Market</h4>
-                            <p class="text-xs text-slate-500">Walk the active street market aisles. Grab a slice of fresh tropical dragon fruit, pomelo or mango.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Active Morning Steps at Supasarnrangsan Market</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Walk the active street market aisles. Grab a slice of fresh tropical dragon fruit, pomelo or mango.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Morning Market (Supasarnrangsan)')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Morning Market (Supasarnrangsan)')" class="bg-white border border-slate-200 hover:border-vibrant-sky hover:text-vibrant-sky px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-emerald/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🍗</span>
+                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-300">🍗</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-emerald uppercase tracking-wider">Lunch</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Low-GI Southern Lunch at Suan Cheun Suk</h4>
-                            <p class="text-xs text-slate-500">Healthy and delicious local Som Tum (Papaya salad) and skinless Gai Yang (grilled chicken).</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Low-GI Southern Lunch at Suan Cheun Suk</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Healthy and delicious local Som Tum (Papaya salad) and skinless Gai Yang (grilled chicken).</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Suan Cheun Suk')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Suan Cheun Suk')" class="bg-white border border-slate-200 hover:border-vibrant-emerald hover:text-vibrant-emerald px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-rose/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🏬</span>
+                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-300">🏬</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-rose uppercase tracking-wider">Afternoon</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Cool Indoor Walkways at Central Hatyai</h4>
-                            <p class="text-xs text-slate-500">Escape the hot afternoon sun by pacing and walking inside the modern fully air-conditioned shopping center.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Cool Indoor Walkways at Central Hatyai</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Escape the hot afternoon sun by pacing and walking inside the modern fully air-conditioned shopping center.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Central Hatyai')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Central Hatyai')" class="bg-white border border-slate-200 hover:border-vibrant-rose hover:text-vibrant-rose px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-violet/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🎷</span>
+                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-300">🎷</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-violet uppercase tracking-wider">Evening</span>
                             <h4 class="font-extrabold text-slate-800 text-base">Hatyai Jazz Festival: Night 2</h4>
-                            <p class="text-xs text-slate-500">Return to Thammanoonvithi Small Park via the Chue Chang Temple shuttle stop to catch international jazz sets.</p>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Return to Thammanoonvithi Small Park via the Chue Chang Temple shuttle stop to catch international jazz sets.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Thammanoonvithi Small Park')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Thammanoonvithi Small Park')" class="bg-white border border-slate-200 hover:border-vibrant-violet hover:text-vibrant-violet px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
             </div>
 
             <div id="day-content-3" class="day-panel hidden space-y-4">
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-sky/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🏢</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">🏢</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-sky uppercase tracking-wider">Morning</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Indoor Cardio at Diana Complex</h4>
-                            <p class="text-xs text-slate-500">Walk and explore the departments of Diana Complex inside a comfortable, climate-controlled environment.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Indoor Cardio at Diana Complex</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Walk and explore the departments of Diana Complex inside a comfortable, climate-controlled environment.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Diana Complex Shopping Center')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Diana Complex Shopping Center')" class="bg-white border border-slate-200 hover:bg-slate-100 px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-rose/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🏢</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">🏢</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-rose uppercase tracking-wider">Afternoon</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Lee Gardens Plaza Excursion</h4>
-                            <p class="text-xs text-slate-500">Head downtown to walk inside the retail outlets, local bookstores, and covered craft stalls.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Lee Gardens Plaza Excursion</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Head downtown to walk inside the retail outlets, local bookstores, and covered craft stalls.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Lee Gardens Plaza')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Lee Gardens Plaza')" class="bg-white border border-slate-200 hover:bg-slate-100 px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-emerald/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🍲</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">🍲</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-emerald uppercase tracking-wider">Dinner</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Herbal Jim Jum at Rim Rua Kratha Ron</h4>
-                            <p class="text-xs text-slate-500">Head east to eat a traditional herbal claypot steamboat with lean fish and greens. Short 4-min ride back to hotel.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Herbal Jim Jum at Rim Rua Kratha Ron</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Head east to eat a traditional herbal claypot steamboat with lean fish and greens. Short 4-min ride back to hotel.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Rim Rua Kratha Ron Restaurant')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Rim Rua Kratha Ron Restaurant')" class="bg-white border border-slate-200 hover:bg-slate-100 px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
             </div>
 
             <div id="day-content-4" class="day-panel hidden space-y-4">
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-sky/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🛍️</span>
+                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm group-hover:scale-110 transition-transform duration-300">🛍️</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-sky uppercase tracking-wider">Morning</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Souvenir Hunt at Kim Yong Market (Dry Section)</h4>
-                            <p class="text-xs text-slate-500">Pick up healthy local walnuts, roasted chestnuts, herbal tea leaves, and Southern Thai herb rice salads.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Souvenir Hunt at Kim Yong Market (Dry Section)</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">Pick up healthy local walnuts, roasted chestnuts, herbal tea leaves, and Southern Thai herb rice salads.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Morning Market (Supasarnrangsan)')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Morning Market (Supasarnrangsan)')" class="bg-white border border-slate-200 hover:border-vibrant-sky hover:text-vibrant-sky px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Area
                     </button>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-vibrant-sky transition-all gap-4">
+                <div class="group flex flex-col md:flex-row md:items-center justify-between p-5 bg-slate-50/50 hover:bg-white rounded-2xl border border-slate-100 hover:border-vibrant-emerald/30 transition-all duration-300 gap-4">
                     <div class="flex items-start gap-4">
-                        <span class="text-3xl p-2 bg-white rounded-lg shadow-sm">🐟</span>
+                        <span class="text-3xl p-3 bg-white rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300">🐟</span>
                         <div>
                             <span class="text-xs font-bold text-vibrant-emerald uppercase tracking-wider">Lunch</span>
-                            <h4 class="font-extrabold text-slate-800 text-base">Pla Neung Manao at Krua Rim Nam</h4>
-                            <p class="text-xs text-slate-500">A peaceful riverside lunch. Indulge in fresh steamed sea bass in lime and garlic before returning to Penang.</p>
+                            <h4 class="font-bold text-slate-800 text-lg mt-0.5">Pla Neung Manao at Krua Rim Nam</h4>
+                            <p class="text-sm text-slate-500 mt-1 leading-relaxed">A peaceful riverside lunch. Indulge in fresh steamed sea bass in lime and garlic before returning to Penang.</p>
                         </div>
                     </div>
-                    <button onclick="focusLocationByName('Krua Rim Nam Restaurant')" class="bg-white border border-slate-200 hover:bg-slate-100 px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 self-start md:self-auto shrink-0">
+                    <button onclick="focusLocationByName('Krua Rim Nam Restaurant')" class="bg-white border border-slate-200 hover:bg-slate-100 px-5 py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 self-start md:self-auto shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
                         📍 Locate Spot
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Travel Budget & Expense Tracker -->
-        <section class="card border-t-violet">
+        <!-- Section 2: Budget Tracker -->
+        <section class="card accent-violet">
             <header class="mb-8 text-center md:text-left">
-                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
-                    <span class="text-4xl">💰</span> Travel Budget & Expense Tracker
+                <div class="flex items-center justify-between flex-wrap gap-4 mb-2">
+                    <span class="text-sm font-extrabold text-vibrant-violet tracking-widest uppercase bg-vibrant-violet/10 px-3 py-1 rounded-md">Phase 2</span>
+                    <div class="flex items-center gap-2">
+                        <span id="sync-indicator" class="relative flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" id="sync-ping"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500" id="sync-dot"></span>
+                        </span>
+                        <span id="sync-status" class="text-xs font-bold text-slate-600 uppercase tracking-wide">Connecting...</span>
+                    </div>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-vibrant-dark tracking-tight mb-3">
+                    Travel Budget & Expense Tracker
                 </h2>
-                <p class="text-gray-600 text-lg leading-relaxed">
-                    Track your actual spending in Thai Baht (THB) or Malaysian Ringgit (MYR). Your expenses are securely synchronized and accessible across all synced devices in real-time. <span class="font-bold text-vibrant-violet">Swipe left on any log item to delete.</span>
+                <p class="text-slate-500 text-base md:text-lg leading-relaxed max-w-4xl">
+                    Track your actual spending in Thai Baht (THB) or Malaysian Ringgit (MYR). Your expenses are securely synchronized and accessible across all synced devices in real-time. <span class="font-semibold text-vibrant-violet">Swipe left on any log item to delete.</span>
                 </p>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                    <h3 class="font-bold text-lg text-vibrant-dark mb-4">Add New Expense</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-5 bg-slate-50/50 p-6 rounded-2xl border border-slate-100/80">
+                    <h3 class="font-bold text-lg text-vibrant-dark mb-5 flex items-center gap-2">
+                        <span class="text-xl">➕</span> Add New Expense
+                    </h3>
                     <form id="expense-form" class="space-y-4">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Item Name</label>
-                            <input type="text" id="expense-name" required placeholder="e.g. Traditional Thai Massage" class="w-full p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-vibrant-violet text-sm">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Item Name</label>
+                            <input type="text" id="expense-name" required placeholder="e.g. Traditional Thai Massage" class="w-full p-3.5 rounded-xl border border-slate-200/80 bg-white focus:outline-none focus:ring-2 focus:ring-vibrant-violet focus:border-transparent text-sm transition-all duration-300">
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Currency</label>
-                                <select id="expense-currency" class="w-full p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-vibrant-violet text-sm">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Currency</label>
+                                <select id="expense-currency" class="w-full p-3.5 rounded-xl border border-slate-200/80 bg-white focus:outline-none focus:ring-2 focus:ring-vibrant-violet focus:border-transparent text-sm transition-all duration-300">
                                     <option value="THB">THB (฿)</option>
                                     <option value="MYR">MYR (RM)</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Category</label>
-                                <select id="expense-category" class="w-full p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-vibrant-violet text-sm">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Category</label>
+                                <select id="expense-category" class="w-full p-3.5 rounded-xl border border-slate-200/80 bg-white focus:outline-none focus:ring-2 focus:ring-vibrant-violet focus:border-transparent text-sm transition-all duration-300">
                                     <option value="Food">Food</option>
                                     <option value="Transport">Transport</option>
                                     <option value="Wellness">Wellness</option>
@@ -343,151 +419,160 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-1">Date</label>
-                                <input type="date" id="expense-date" required class="w-full p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-vibrant-violet text-sm">
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Date</label>
+                                <input type="date" id="expense-date" required class="w-full p-3.5 rounded-xl border border-slate-200/80 bg-white focus:outline-none focus:ring-2 focus:ring-vibrant-violet focus:border-transparent text-sm transition-all duration-300">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Cost / Amount</label>
-                            <input type="number" id="expense-amount" required min="0.01" step="any" placeholder="e.g. 350" class="w-full p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-vibrant-violet text-sm">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Cost / Amount</label>
+                            <input type="number" id="expense-amount" required min="0.01" step="any" placeholder="e.g. 350" class="w-full p-3.5 rounded-xl border border-slate-200/80 bg-white focus:outline-none focus:ring-2 focus:ring-vibrant-violet focus:border-transparent text-sm transition-all duration-300">
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-500 mb-1">Estimated Conversion (1 MYR = 7.8 THB):</label>
-                            <div class="bg-white p-3 rounded-lg border border-slate-200 text-sm font-bold text-vibrant-emerald flex justify-between items-center">
-                                <span id="myr-preview-label">Equivalent in MYR:</span>
-                                <span id="myr-preview">RM 0.00</span>
+                        <div class="pt-2">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200/60 text-sm font-semibold text-vibrant-emerald flex justify-between items-center shadow-sm">
+                                <span id="myr-preview-label" class="text-slate-500">Equivalent in MYR:</span>
+                                <span id="myr-preview" class="text-base font-bold text-vibrant-emerald">RM 0.00</span>
                             </div>
                         </div>
-                        <button type="submit" class="w-full bg-vibrant-violet text-white py-3 rounded-lg font-bold hover:bg-violet-700 transition-all text-sm shadow-md">
+                        <button type="submit" class="w-full bg-vibrant-violet hover:bg-violet-700 text-white py-4 rounded-xl font-bold transition-all duration-300 text-sm shadow-md hover:shadow-lg active:scale-[0.98]">
                             Save Expense
                         </button>
                     </form>
                 </div>
 
-                <div class="flex flex-col h-full justify-between">
-                    <div class="bg-slate-50 p-6 rounded-xl border border-slate-200 flex-grow mb-4 flex flex-col">
-                        <div class="flex justify-between items-center mb-4 border-b pb-2">
-                            <h3 class="font-bold text-lg text-vibrant-dark">Expense Log</h3>
-                            <span id="sync-status" class="text-xs bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded-full">Connecting...</span>
-                        </div>
-                        <div id="expenses-list" class="space-y-2 overflow-y-auto max-h-[220px] flex-grow pr-1">
-                            <div class="text-center py-8 text-gray-400 text-sm">No expenses logged yet.</div>
+                <div class="lg:col-span-7 flex flex-col justify-between">
+                    <div class="bg-slate-50/50 p-6 rounded-2xl border border-slate-100/80 flex-grow mb-4 flex flex-col">
+                        <h3 class="font-bold text-lg text-vibrant-dark mb-4 pb-2 border-b border-slate-200/60 flex items-center gap-2">
+                            <span class="text-xl">📋</span> Expense Log
+                        </h3>
+                        <div id="expenses-list" class="space-y-2 overflow-y-auto max-h-[300px] flex-grow pr-1">
+                            <div class="text-center py-12 text-gray-400 text-sm">No expenses logged yet.</div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-vibrant-dark text-white p-4 rounded-xl shadow-md text-center">
-                            <span class="text-xs text-slate-400 font-semibold block mb-1">Total Spent (THB)</span>
-                            <span id="total-thb" class="text-2xl font-extrabold text-vibrant-amber">฿0</span>
+                        <div class="bg-vibrant-dark text-white p-5 rounded-2xl shadow-sm border border-slate-800">
+                            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider block mb-1">Total Spent (THB)</span>
+                            <span id="total-thb" class="text-3xl font-extrabold text-vibrant-amber">฿0</span>
                         </div>
-                        <div class="bg-vibrant-violet text-white p-4 rounded-xl shadow-md text-center">
-                            <span class="text-xs text-violet-200 font-semibold block mb-1">Total Spent (MYR)</span>
-                            <span id="total-myr" class="text-2xl font-extrabold text-white">RM 0.00</span>
+                        <div class="bg-gradient-to-br from-vibrant-violet to-purple-700 text-white p-5 rounded-2xl shadow-sm border border-vibrant-violet/20">
+                            <span class="text-xs text-violet-200 font-bold uppercase tracking-wider block mb-1">Total Spent (MYR)</span>
+                            <span id="total-myr" class="text-3xl font-extrabold text-white">RM 0.00</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="card border-t-violet">
-            <header class="mb-8 text-center md:text-left">
-                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
-                    <span class="text-4xl">&#128506;&#65039;</span> Hatyai 4D3N Interactive Route Map & Wellness Guide
+        <!-- Section 3: Interactive Map -->
+        <section class="card accent-violet">
+            <header class="mb-6 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                    <span class="text-sm font-extrabold text-vibrant-violet tracking-widest uppercase bg-vibrant-violet/10 px-3 py-1 rounded-md">Phase 3</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-vibrant-dark tracking-tight mb-3">
+                    Hatyai 4D3N Interactive Route Map & Wellness Guide
                 </h2>
-                <p class="text-gray-600 text-lg leading-relaxed">
+                <p class="text-slate-500 text-base md:text-lg leading-relaxed">
                     Explore all planned locations from your 4-Day Low-Cholesterol Itinerary. Select any point of interest from the sidebar to zoom on the map, read descriptions, and easily launch direct navigation with official Google Maps pins.
                 </p>
             </header>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 h-[450px] relative">
-                    <div id="map" class="w-full h-full border border-slate-200 shadow-md"></div>
+                <div class="lg:col-span-2 h-[480px] relative">
+                    <div id="map" class="w-full h-full border border-slate-200/80 shadow-md rounded-2xl"></div>
                 </div>
-                <div class="bg-white rounded-xl border border-slate-200 p-4 h-[450px] flex flex-col">
-                    <h3 class="font-bold text-vibrant-dark mb-3 text-base flex items-center gap-2 border-b pb-2">
-                        <span>📍</span> Select Itinerary Location
+                <div class="bg-slate-50/50 rounded-2xl border border-slate-100 p-5 h-[480px] flex flex-col">
+                    <h3 class="font-bold text-vibrant-dark mb-4 text-base flex items-center gap-2 border-b border-slate-200/60 pb-3">
+                        <span class="text-lg">📍</span> Select Itinerary Location
                     </h3>
-                    <div id="location-list" class="flex-grow overflow-y-auto space-y-2 pr-1"></div>
+                    <div id="location-list" class="flex-grow overflow-y-auto space-y-2.5 pr-1"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Hybrid Transit Strategy -->
-        <section class="card border-t-amber">
+        <!-- Section 4: Hybrid Transit -->
+        <section class="card accent-amber">
             <header class="mb-8 text-center">
-                <h2 class="text-3xl font-bold text-vibrant-dark mb-3">
-                    <span class="text-4xl">&#128722;</span> Hybrid Transit Strategy
+                <div class="flex items-center justify-center gap-3 mb-2">
+                    <span class="text-sm font-extrabold text-vibrant-amber tracking-widest uppercase bg-vibrant-amber/10 px-3 py-1 rounded-md">Logistics</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-vibrant-dark tracking-tight mb-3">
+                    Hybrid Transit Strategy
                 </h2>
-                <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+                <p class="text-slate-500 text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
                     To maintain the quiet benefits of a suburban hotel while keeping travel costs low, the itinerary utilizes a highly efficient "Grab + Shuttle" hybrid workflow for navigating the Jazz Festival and downtown markets.
                 </p>
             </header>
 
-            <div class="flex flex-col md:flex-row items-center justify-between bg-amber-50 p-6 md:p-10 rounded-2xl border-2 border-amber-100">
+            <div class="flex flex-col md:flex-row items-stretch justify-between bg-amber-50/40 p-6 md:p-8 rounded-3xl border border-amber-100/80 gap-4">
                 
-                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-sky">
-                    <span class="text-5xl mb-3">&#128662;</span>
-                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">1. Suburban Link</h3>
-                    <p class="text-sm text-gray-500">Take a quick Grab from Subanan Hotel to the downtown perimeter.</p>
-                    <span class="mt-3 bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">Cost: ~80 THB</span>
+                <div class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-sky">
+                    <span class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">Grab</span>
+                    <h3 class="font-bold text-lg text-vibrant-dark mb-2">1. Suburban Link</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Take a quick Grab from Subanan Hotel to the downtown perimeter.</p>
+                    <span class="mt-4 bg-sky-50 border border-sky-100 text-sky-800 text-xs font-bold px-3 py-1.5 rounded-full">Cost: ~80 THB</span>
                 </div>
 
-                <div class="flow-arrow">&#10142;</div>
+                <div class="flow-arrow opacity-60">&#10142;</div>
 
-                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-rose">
-                    <span class="text-5xl mb-3">&#128652;</span>
-                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">2. Free Shuttle</h3>
-                    <p class="text-sm text-gray-500">Board the Route 1 (Red Line) Shuttle at Chue Chang or Kim Yong stops.</p>
-                    <span class="mt-3 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full">Cost: 0 THB (Free)</span>
+                <div class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-rose">
+                    <span class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🚌</span>
+                    <h3 class="font-bold text-lg text-vibrant-dark mb-2">2. Free Shuttle</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Board the Route 1 (Red Line) Shuttle at Chue Chang or Kim Yong stops.</p>
+                    <span class="mt-4 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1.5 rounded-full">Cost: 0 THB (Free)</span>
                 </div>
 
-                <div class="flow-arrow">&#10142;</div>
+                <div class="flow-arrow opacity-60">&#10142;</div>
 
-                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-emerald">
-                    <span class="text-5xl mb-3">&#127927;</span>
-                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">3. Destination</h3>
-                    <p class="text-sm text-gray-500">Arrive directly at the Jazz Festival (Thammanoonvithi Park) or night markets.</p>
-                    <span class="mt-3 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">High Convenience</span>
+                <div class="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-emerald">
+                    <span class="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">🎷</span>
+                    <h3 class="font-bold text-lg text-vibrant-dark mb-2">3. Destination</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">Arrive directly at the Jazz Festival (Thammanoonvithi Park) or night markets.</p>
+                    <span class="mt-4 bg-emerald-50 border border-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full">High Convenience</span>
                 </div>
 
             </div>
         </section>
 
-        <section class="card border-t-rose mb-10">
+        <!-- Section 5: Diet Composition -->
+        <section class="card accent-rose mb-10">
             <header class="mb-8 text-center md:text-left">
-                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
-                    <span class="text-4xl">&#127869;&#65039;</span> Low-Cholesterol Protocol
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                    <span class="text-sm font-extrabold text-vibrant-rose tracking-widest uppercase bg-vibrant-rose/10 px-3 py-1 rounded-md">Wellness</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-vibrant-dark tracking-tight mb-3">
+                    Low-Cholesterol Protocol
                 </h2>
-                <p class="text-gray-600 text-lg leading-relaxed">
+                <p class="text-slate-500 text-base md:text-lg leading-relaxed">
                     Thai cuisine offers incredible heart-healthy options if navigated correctly. The itinerary strictly eliminates deep-fried items and heavy coconut creams in favor of high-fiber, steamed, and herbal preparations.
                 </p>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                <div class="chart-container h-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 chart-container h-[350px]">
                     <canvas id="dietChart"></canvas>
                 </div>
                 
-                <div class="space-y-4">
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-emerald-50 border border-emerald-100 transition hover:shadow-md">
-                        <div class="bg-white p-2 rounded-lg text-2xl shadow-sm">&#127807;</div>
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="flex items-start gap-4 p-5 rounded-2xl bg-emerald-50/40 border border-emerald-100/50 hover:bg-emerald-50/80 transition duration-300">
+                        <div class="bg-white p-3 rounded-xl text-3xl shadow-sm">🌿</div>
                         <div>
                             <h4 class="font-bold text-vibrant-dark text-lg">Fresh Herb Salads</h4>
-                            <p class="text-sm text-gray-600"><strong>Khao Yum</strong> at Morning Markets. Packed with raw betel leaves, lemongrass, and pomelo fiber.</p>
+                            <p class="text-sm text-slate-600 mt-0.5"><strong>Khao Yum</strong> at Morning Markets. Packed with raw betel leaves, lemongrass, and pomelo fiber.</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-sky-50 border border-sky-100 transition hover:shadow-md">
-                        <div class="bg-white p-2 rounded-lg text-2xl shadow-sm">&#127858;</div>
+                    <div class="flex items-start gap-4 p-5 rounded-2xl bg-sky-50/40 border border-sky-100/50 hover:bg-sky-50/80 transition duration-300">
+                        <div class="bg-white p-3 rounded-xl text-3xl shadow-sm">🍲</div>
                         <div>
                             <h4 class="font-bold text-vibrant-dark text-lg">Clear Herbal Broths</h4>
-                            <p class="text-sm text-gray-600"><strong>Jim Jum</strong> at Rim Rua Kratha Ron. Oil-free steamboat loaded with local mushrooms and leafy greens.</p>
+                            <p class="text-sm text-slate-600 mt-0.5"><strong>Jim Jum</strong> at Rim Rua Kratha Ron. Oil-free steamboat loaded with local mushrooms and leafy greens.</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-4 p-4 rounded-xl bg-amber-50 border border-amber-100 transition hover:shadow-md">
-                        <div class="bg-white p-2 rounded-lg text-2xl shadow-sm">&#128031;</div>
+                    <div class="flex items-start gap-4 p-5 rounded-2xl bg-amber-50/40 border border-amber-100/50 hover:bg-amber-50/80 transition duration-300">
+                        <div class="bg-white p-3 rounded-xl text-3xl shadow-sm">🐟</div>
                         <div>
                             <h4 class="font-bold text-vibrant-dark text-lg">Zero-Oil Steamed</h4>
-                            <p class="text-sm text-gray-600"><strong>Pla Neung Manao</strong> at Krua Rim Nam. Lean sea bass steamed in garlic, chili, and fresh lime juice.</p>
+                            <p class="text-sm text-slate-600 mt-0.5"><strong>Pla Neung Manao</strong> at Krua Rim Nam. Lean sea bass steamed in garlic, chili, and fresh lime juice.</p>
                         </div>
                     </div>
                 </div>
@@ -498,19 +583,19 @@
 
     <!-- Custom Delete Confirmation Modal -->
     <div id="delete-confirm-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-300">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-300">
             <div class="text-center">
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-rose-100 text-rose-600 mb-4 text-xl select-none">
+                <div class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-rose-50 text-rose-600 mb-4 text-2xl select-none">
                     ⚠️
                 </div>
-                <h3 class="text-lg font-bold text-slate-900 mb-2">Delete Expense?</h3>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Delete Expense?</h3>
                 <p class="text-sm text-slate-500 mb-6">Are you sure you want to delete this expense? This action cannot be undone.</p>
             </div>
             <div class="flex gap-3">
-                <button id="modal-cancel-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all">
+                <button id="modal-cancel-btn" class="flex-1 py-3.5 px-4 rounded-xl font-bold text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all duration-200">
                     Cancel
                 </button>
-                <button id="modal-confirm-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm bg-rose-600 hover:bg-rose-700 text-white transition-all shadow-md">
+                <button id="modal-confirm-btn" class="flex-1 py-3.5 px-4 rounded-xl font-bold text-sm bg-rose-600 hover:bg-rose-700 text-white transition-all duration-200 shadow-md">
                     Delete
                 </button>
             </div>
@@ -540,7 +625,6 @@
 
         const currentTripId = 'HY-SHARED';
 
-        // Targets for confirmation modal
         let expenseToDelete = null;
         let cardToRestore = null;
         let bgToDelete = null;
@@ -613,11 +697,9 @@
                 card.style.transition = 'transform 0.2s ease-out';
                 
                 if (currentX < -120) {
-                    // Lock swiped position visually
                     card.style.transform = 'translateX(-120px)';
                     if (bgDelete) bgDelete.style.opacity = '1';
                     
-                    // Set deletion targets and trigger the confirmation modal
                     expenseToDelete = expenseId;
                     cardToRestore = card;
                     bgToDelete = bgDelete;
@@ -656,7 +738,7 @@
             const filteredExpenses = expenses.filter(exp => exp.tripId === currentTripId);
 
             if (filteredExpenses.length === 0) {
-                listContainer.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm">No expenses logged yet.</div>`;
+                listContainer.innerHTML = `<div class="text-center py-12 text-slate-400 text-sm">No expenses logged yet.</div>`;
                 totalThbEl.innerText = "฿0";
                 totalMyrEl.innerText = "RM 0.00";
                 return;
@@ -694,12 +776,12 @@
                 const formattedDate = expense.date ? formatDateString(expense.date) : 'No Date';
 
                 const itemWrapper = document.createElement('div');
-                itemWrapper.className = "relative overflow-hidden rounded-lg shadow-sm border border-slate-100 mb-2 transition-all duration-300";
+                itemWrapper.className = "relative overflow-hidden rounded-xl border border-slate-100 shadow-sm mb-2.5 transition-all duration-300";
                 itemWrapper.innerHTML = `
                     <div id="bg-delete-${expense.id}" class="absolute inset-0 bg-rose-500 text-white flex items-center justify-end px-6 font-bold text-xs select-none pointer-events-none opacity-0 transition-opacity duration-150">
                         <span>Confirm Swipe to Delete 🗑️</span>
                     </div>
-                    <div id="card-swipe-${expense.id}" class="relative bg-white p-3 flex justify-between items-center transition-transform duration-200 ease-out cursor-grab active:cursor-grabbing select-none">
+                    <div id="card-swipe-${expense.id}" class="relative bg-white p-4 flex justify-between items-center transition-transform duration-200 ease-out cursor-grab active:cursor-grabbing select-none">
                         <div class="flex flex-col gap-1 pointer-events-none">
                             <div class="flex items-center gap-2 flex-wrap pointer-events-none">
                                 <span class="text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-full pointer-events-none">${expense.category}</span>
@@ -710,8 +792,8 @@
                             </span>
                         </div>
                         <div class="text-right pointer-events-none">
-                            <span class="font-bold text-slate-800 block pointer-events-none">RM ${amountMYR.toFixed(2)}</span>
-                            <span class="text-xs text-slate-500 block pointer-events-none">Original: ${displayOriginal}</span>
+                            <span class="font-bold text-slate-800 block pointer-events-none text-base">RM ${amountMYR.toFixed(2)}</span>
+                            <span class="text-xs text-slate-400 block pointer-events-none mt-0.5">Original: ${displayOriginal}</span>
                         </div>
                     </div>
                 `;
@@ -819,11 +901,17 @@
             if (expensesListener) expensesListener();
 
             const statusEl = document.getElementById('sync-status');
+            const syncPing = document.getElementById('sync-ping');
+            const syncDot = document.getElementById('sync-dot');
+
             expensesListener = onSnapshot(
                 collection(db, 'artifacts', appId, 'public', 'data', 'expenses'),
                 (snapshot) => {
                     statusEl.innerText = "Cloud Synced";
-                    statusEl.className = "text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-1 rounded-full";
+                    statusEl.className = "text-xs font-bold text-emerald-600 uppercase tracking-wide";
+                    if (syncPing) syncPing.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+                    if (syncDot) syncDot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
+
                     const list = [];
                     snapshot.forEach((doc) => {
                         list.push({ id: doc.id, ...doc.data() });
@@ -837,7 +925,9 @@
                         errorMsg = "Permission Denied (Check Rules)";
                     }
                     statusEl.innerText = errorMsg;
-                    statusEl.className = "text-xs bg-rose-100 text-rose-800 font-bold px-2 py-1 rounded-full";
+                    statusEl.className = "text-xs font-bold text-rose-600 uppercase tracking-wide";
+                    if (syncPing) syncPing.className = "absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-0";
+                    if (syncDot) syncDot.className = "relative inline-flex rounded-full h-3 w-3 bg-rose-500";
                     
                     db = null;
                     currentUser = null;
@@ -846,7 +936,6 @@
             );
         }
 
-        // Setup custom modal button interactions
         document.getElementById('modal-cancel-btn').addEventListener('click', () => {
             document.getElementById('delete-confirm-modal').classList.add('hidden');
             if (cardToRestore) {
@@ -890,14 +979,19 @@
 
         async function initStorage() {
             const statusEl = document.getElementById('sync-status');
+            const syncPing = document.getElementById('sync-ping');
+            const syncDot = document.getElementById('sync-dot');
             const dateInput = document.getElementById('expense-date');
+            
             if (dateInput) {
                 dateInput.value = "2026-05-29";
             }
 
             if (!firebaseConfig) {
                 statusEl.innerText = "Offline Mode";
-                statusEl.className = "text-xs bg-slate-100 text-slate-600 font-bold px-2 py-1 rounded-full";
+                statusEl.className = "text-xs font-bold text-slate-500 uppercase tracking-wide";
+                if (syncPing) syncPing.className = "absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-0";
+                if (syncDot) syncDot.className = "relative inline-flex rounded-full h-3 w-3 bg-slate-400";
                 renderExpenses(localExpenses);
                 return;
             }
@@ -913,7 +1007,9 @@
                         setupRealtimeListener();
                     } else {
                         statusEl.innerText = "Connecting...";
-                        statusEl.className = "text-xs bg-amber-100 text-amber-800 font-bold px-2 py-1 rounded-full";
+                        statusEl.className = "text-xs font-bold text-amber-600 uppercase tracking-wide";
+                        if (syncPing) syncPing.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75";
+                        if (syncDot) syncDot.className = "relative inline-flex rounded-full h-3 w-3 bg-amber-500";
                     }
                 });
 
@@ -928,13 +1024,18 @@
                 } catch (authError) {
                     console.warn("Authentication failed, falling back to LocalStorage:", authError);
                     let errorMsg = "Offline (Auth Error)";
+                    let statusColor = "text-rose-600";
+                    let dotColor = "bg-rose-500";
+                    
                     if (authError.code === 'auth/configuration-not-found') {
                         errorMsg = "Firebase Auth Not Enabled";
                     } else if (authError.code === 'auth/operation-not-allowed') {
                         errorMsg = "Enable Anonymous Auth!";
                     }
                     statusEl.innerText = errorMsg;
-                    statusEl.className = "text-xs bg-rose-100 text-rose-800 font-bold px-2 py-1 rounded-full";
+                    statusEl.className = `text-xs font-bold uppercase tracking-wide ${statusColor}`;
+                    if (syncPing) syncPing.className = "absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-0";
+                    if (syncDot) syncDot.className = `relative inline-flex rounded-full h-3 w-3 ${dotColor}`;
                     
                     db = null;
                     currentUser = null;
@@ -944,7 +1045,9 @@
             } catch(e) {
                 console.error("Firebase init failed, running offline:", e);
                 statusEl.innerText = "Error (Offline)";
-                statusEl.className = "text-xs bg-rose-100 text-rose-800 font-bold px-2 py-1 rounded-full";
+                statusEl.className = "text-xs font-bold text-rose-600 uppercase tracking-wide";
+                if (syncPing) syncPing.className = "absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-0";
+                if (syncDot) syncDot.className = "relative inline-flex rounded-full h-3 w-3 bg-rose-500";
                 renderExpenses(localExpenses);
             }
         }
@@ -972,7 +1075,7 @@
 
         const globalTooltipConfig = {
             tooltip: {
-                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                backgroundColor: 'rgba(15, 23, 42, 0.95)',
                 titleFont: { family: 'Outfit', size: 14, weight: 'bold' },
                 bodyFont: { family: 'Outfit', size: 13 },
                 padding: 12,
@@ -1007,21 +1110,21 @@
                         '#8b5cf6',
                         '#f59e0b'
                     ],
-                    borderWidth: 3,
+                    borderWidth: 4,
                     borderColor: '#ffffff',
-                    hoverOffset: 8
+                    hoverOffset: 12
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '65%',
+                cutout: '70%',
                 plugins: {
                     legend: {
                         position: 'right',
                         labels: { 
-                            font: { family: 'Outfit', size: 13, weight: '500' },
-                            padding: 20,
+                            font: { family: 'Outfit', size: 12, weight: '500' },
+                            padding: 15,
                             usePointStyle: true
                         }
                     },
@@ -1034,7 +1137,7 @@
             {
                 name: "Subanan Hotel and Residence",
                 type: "Base / Hotel",
-                coords: [7.0026, 100.4950],
+                coords: [7.0032, 100.4868],
                 desc: "Quiet suburban hotel on Prachayindee Road. Features comfortable modern rooms, a swimming pool, and excellent rest conditions.",
                 link: "https://www.google.com/maps/search/?api=1&query=Subanan+Hotel+and+Residence+Hat+Yai",
                 icon: "🏨",
@@ -1043,7 +1146,7 @@
             {
                 name: "I AM SALAD (Rajyindee Road)",
                 type: "Healthy Eatery",
-                coords: [7.0015, 100.4855],
+                coords: [7.0019, 100.4848],
                 desc: "A dedicated salad shop offering fantastic grilled tofu salads, lean protein, and clean dressings.",
                 link: "https://www.google.com/maps/search/?api=1&query=I+AM+SALAD+Hat+Yai",
                 icon: "🥗",
@@ -1052,7 +1155,7 @@
             {
                 name: "Sense2 Hair Salon Massage & Spa",
                 type: "Wellness & Spa",
-                coords: [7.0062, 100.4760],
+                coords: [7.0022, 100.4841],
                 desc: "Extremely clean, modern local spa. Excellent for circulation-boosting Foot and Thai Massages.",
                 link: "https://www.google.com/maps/search/?api=1&query=Sense2+Hair+Salon+Massage+and+Spa+Hat+Yai",
                 icon: "💆",
@@ -1079,7 +1182,7 @@
             {
                 name: "Suan Cheun Suk",
                 type: "Healthy Eatery",
-                coords: [7.0215, 100.4820],
+                coords: [7.0048, 100.4853],
                 desc: "Famous Southern food spot. Order healthy Som Tum (Papaya Salad) and oil-free skinless Gai Yang.",
                 link: "https://www.google.com/maps/search/?api=1&query=Suan+Cheun+Suk+Hat+Yai",
                 icon: "🍗",
@@ -1147,22 +1250,22 @@
             locations.forEach((loc, index) => {
                 const markerIcon = L.divIcon({
                     className: 'custom-div-icon',
-                    html: `<div class="w-8 h-8 rounded-full border-2 border-white shadow-md flex items-center justify-center text-white text-sm" style="background-color: ${loc.color}">${loc.icon}</div>`,
-                    iconSize: [32, 32],
-                    iconAnchor: [16, 32],
-                    popupAnchor: [0, -32]
+                    html: `<div class="w-9 h-9 rounded-full border-2 border-white shadow-md flex items-center justify-center text-white text-base transform hover:scale-110 transition-transform duration-300" style="background-color: ${loc.color}">${loc.icon}</div>`,
+                    iconSize: [36, 36],
+                    iconAnchor: [18, 36],
+                    popupAnchor: [0, -36]
                 });
 
                 const marker = L.marker(loc.coords, { icon: markerIcon }).addTo(map);
                 
                 const popupContent = `
                     <div class="p-2 max-w-xs font-sans">
-                        <span class="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full text-white inline-block mb-1" style="background-color: ${loc.color}">
+                        <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-white inline-block mb-1.5" style="background-color: ${loc.color}">
                             ${loc.type}
                         </span>
                         <h4 class="font-bold text-slate-800 text-sm mt-1">${loc.name}</h4>
-                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">${loc.desc}</p>
-                        <a href="${loc.link}" target="_blank" class="mt-3 inline-flex items-center gap-1.5 bg-vibrant-dark text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-slate-700 transition-all">
+                        <p class="text-xs text-slate-500 mt-1 leading-relaxed">${loc.desc}</p>
+                        <a href="${loc.link}" target="_blank" class="mt-3 inline-flex items-center gap-1.5 bg-slate-900 text-white text-xs font-bold px-3 py-2 rounded-lg hover:bg-slate-700 transition-all">
                             Open in Google Maps 📍
                         </a>
                     </div>
@@ -1172,15 +1275,15 @@
                 markers.push(marker);
 
                 const itemBtn = document.createElement('button');
-                itemBtn.className = "w-full text-left p-3 rounded-lg border border-slate-100 hover:border-slate-300 transition-all flex items-center gap-3 bg-slate-50 hover:bg-white";
+                itemBtn.className = "w-full text-left p-3.5 rounded-xl border border-slate-100 hover:border-slate-300/80 hover:bg-white transition-all flex items-center gap-3.5 bg-slate-100/50 shadow-sm hover:shadow-md group";
                 itemBtn.onclick = () => focusLocation(index);
                 itemBtn.innerHTML = `
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm text-white shrink-0" style="background-color: ${loc.color}">
+                    <div class="w-9 h-9 rounded-full flex items-center justify-center text-base text-white shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm" style="background-color: ${loc.color}">
                         ${loc.icon}
                     </div>
-                    <div>
-                        <h4 class="font-bold text-xs text-slate-800">${loc.name}</h4>
-                        <span class="text-[10px] text-slate-500 font-semibold">${loc.type}</span>
+                    <div class="overflow-hidden">
+                        <h4 class="font-bold text-xs text-slate-800 truncate group-hover:text-vibrant-violet transition-colors duration-200">${loc.name}</h4>
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block mt-0.5">${loc.type}</span>
                     </div>
                 `;
                 listContainer.appendChild(itemBtn);
@@ -1210,9 +1313,9 @@
             for (let i = 1; i <= 4; i++) {
                 const tab = document.getElementById(`day-tab-${i}`);
                 if (i === dayNumber) {
-                    tab.className = "py-3 px-6 text-base font-bold rounded-t-lg transition-all border-b-2 border-vibrant-sky bg-sky-50 text-vibrant-sky shrink-0";
+                    tab.className = "py-3 px-6 text-sm font-bold rounded-xl transition-all duration-300 bg-white text-vibrant-sky shadow-sm shrink-0";
                 } else {
-                    tab.className = "py-3 px-6 text-base font-bold rounded-t-lg transition-all border-b-2 border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50 shrink-0";
+                    tab.className = "py-3 px-6 text-sm font-semibold rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-800 shrink-0";
                 }
             }
         };
