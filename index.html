@@ -305,92 +305,16 @@
             </div>
         </section>
 
-        <section class="card border-t-amber">
-            <header class="mb-8 text-center">
-                <h2 class="text-3xl font-bold text-vibrant-dark mb-3">
-                    <span class="text-4xl">&#128722;</span> Hybrid Transit Strategy
-                </h2>
-                <p class="text-gray-600 text-lg max-w-3xl mx-auto">
-                    To maintain the quiet benefits of a suburban hotel while keeping travel costs low, the itinerary utilizes a highly efficient "Grab + Shuttle" hybrid workflow for navigating the Jazz Festival and downtown markets.
-                </p>
-            </header>
-
-            <div class="flex flex-col md:flex-row items-center justify-between bg-amber-50 p-6 md:p-10 rounded-2xl border-2 border-amber-100">
-                
-                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-sky">
-                    <span class="text-5xl mb-3">&#128662;</span>
-                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">1. Suburban Link</h3>
-                    <p class="text-sm text-gray-500">Take a quick Grab from Subanan Hotel to the downtown perimeter.</p>
-                    <span class="mt-3 bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">Cost: ~80 THB</span>
-                </div>
-
-                <div class="flow-arrow">&#10142;</div>
-
-                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-rose">
-                    <span class="text-5xl mb-3">&#128652;</span>
-                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">2. Free Shuttle</h3>
-                    <p class="text-sm text-gray-500">Board the Route 1 (Red Line) Shuttle at Chue Chang or Kim Yong stops.</p>
-                    <span class="mt-3 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full">Cost: 0 THB (Free)</span>
-                </div>
-
-                <div class="flow-arrow">&#10142;</div>
-
-                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-emerald">
-                    <span class="text-5xl mb-3">&#127927;</span>
-                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">3. Destination</h3>
-                    <p class="text-sm text-gray-500">Arrive directly at the Jazz Festival (Thammanoonvithi Park) or night markets.</p>
-                    <span class="mt-3 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">High Convenience</span>
-                </div>
-
-            </div>
-        </section>
-
-        <section class="card border-t-violet">
-            <header class="mb-8 text-center md:text-left">
-                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
-                    <span class="text-4xl">&#128506;&#65039;</span> Hatyai 4D3N Interactive Route Map & Wellness Guide
-                </h2>
-                <p class="text-gray-600 text-lg leading-relaxed">
-                    Explore all planned locations from your 4-Day Low-Cholesterol Itinerary. Select any point of interest from the sidebar to zoom on the map, read descriptions, and easily launch direct navigation with official Google Maps pins.
-                </p>
-            </header>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 h-[450px] relative">
-                    <div id="map" class="w-full h-full border border-slate-200 shadow-md"></div>
-                </div>
-                <div class="bg-white rounded-xl border border-slate-200 p-4 h-[450px] flex flex-col">
-                    <h3 class="font-bold text-vibrant-dark mb-3 text-base flex items-center gap-2 border-b pb-2">
-                        <span>📍</span> Select Itinerary Location
-                    </h3>
-                    <div id="location-list" class="flex-grow overflow-y-auto space-y-2 pr-1"></div>
-                </div>
-            </div>
-        </section>
-
+        <!-- Travel Budget & Expense Tracker -->
         <section class="card border-t-violet">
             <header class="mb-8 text-center md:text-left">
                 <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
                     <span class="text-4xl">💰</span> Travel Budget & Expense Tracker
                 </h2>
                 <p class="text-gray-600 text-lg leading-relaxed">
-                    Track your actual spending in Thai Baht (THB) or Malaysian Ringgit (MYR). Your expenses are securely synchronized and accessible across all synced devices in real-time.
+                    Track your actual spending in Thai Baht (THB) or Malaysian Ringgit (MYR). Your expenses are securely synchronized and accessible across all synced devices in real-time. <span class="font-bold text-vibrant-violet">Swipe left on any log item to delete.</span>
                 </p>
             </header>
-
-            <!-- Sync Control Box -->
-            <div class="mb-6 p-4 bg-violet-50 rounded-xl border border-violet-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                <div>
-                    <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider">Active Sync Code</span>
-                    <span id="display-sync-code" class="text-lg font-extrabold text-vibrant-violet tracking-widest">Generating...</span>
-                </div>
-                <div class="flex gap-2 w-full sm:w-auto">
-                    <input type="text" id="sync-code-input" placeholder="e.g. HY-A8B9" class="p-3 rounded-lg border border-slate-300 text-xs font-bold uppercase w-full sm:w-36 focus:outline-none focus:ring-2 focus:ring-vibrant-violet">
-                    <button id="sync-code-btn" class="bg-vibrant-violet text-white px-4 py-3 rounded-lg text-xs font-bold hover:bg-violet-700 transition-all shrink-0">
-                        Connect Device
-                    </button>
-                </div>
-            </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
@@ -465,6 +389,70 @@
             </div>
         </section>
 
+        <section class="card border-t-violet">
+            <header class="mb-8 text-center md:text-left">
+                <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
+                    <span class="text-4xl">&#128506;&#65039;</span> Hatyai 4D3N Interactive Route Map & Wellness Guide
+                </h2>
+                <p class="text-gray-600 text-lg leading-relaxed">
+                    Explore all planned locations from your 4-Day Low-Cholesterol Itinerary. Select any point of interest from the sidebar to zoom on the map, read descriptions, and easily launch direct navigation with official Google Maps pins.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 h-[450px] relative">
+                    <div id="map" class="w-full h-full border border-slate-200 shadow-md"></div>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-4 h-[450px] flex flex-col">
+                    <h3 class="font-bold text-vibrant-dark mb-3 text-base flex items-center gap-2 border-b pb-2">
+                        <span>📍</span> Select Itinerary Location
+                    </h3>
+                    <div id="location-list" class="flex-grow overflow-y-auto space-y-2 pr-1"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hybrid Transit Strategy -->
+        <section class="card border-t-amber">
+            <header class="mb-8 text-center">
+                <h2 class="text-3xl font-bold text-vibrant-dark mb-3">
+                    <span class="text-4xl">&#128722;</span> Hybrid Transit Strategy
+                </h2>
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+                    To maintain the quiet benefits of a suburban hotel while keeping travel costs low, the itinerary utilizes a highly efficient "Grab + Shuttle" hybrid workflow for navigating the Jazz Festival and downtown markets.
+                </p>
+            </header>
+
+            <div class="flex flex-col md:flex-row items-center justify-between bg-amber-50 p-6 md:p-10 rounded-2xl border-2 border-amber-100">
+                
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-sky">
+                    <span class="text-5xl mb-3">&#128662;</span>
+                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">1. Suburban Link</h3>
+                    <p class="text-sm text-gray-500">Take a quick Grab from Subanan Hotel to the downtown perimeter.</p>
+                    <span class="mt-3 bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full">Cost: ~80 THB</span>
+                </div>
+
+                <div class="flow-arrow">&#10142;</div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-rose">
+                    <span class="text-5xl mb-3">&#128652;</span>
+                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">2. Free Shuttle</h3>
+                    <p class="text-sm text-gray-500">Board the Route 1 (Red Line) Shuttle at Chue Chang or Kim Yong stops.</p>
+                    <span class="mt-3 bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full">Cost: 0 THB (Free)</span>
+                </div>
+
+                <div class="flow-arrow">&#10142;</div>
+
+                <div class="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-center w-full md:w-1/3 border-b-4 border-vibrant-emerald">
+                    <span class="text-5xl mb-3">&#127927;</span>
+                    <h3 class="font-bold text-xl text-vibrant-dark mb-2">3. Destination</h3>
+                    <p class="text-sm text-gray-500">Arrive directly at the Jazz Festival (Thammanoonvithi Park) or night markets.</p>
+                    <span class="mt-3 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">High Convenience</span>
+                </div>
+
+            </div>
+        </section>
+
         <section class="card border-t-rose mb-10">
             <header class="mb-8 text-center md:text-left">
                 <h2 class="text-3xl font-bold text-vibrant-dark mb-3 flex items-center justify-center md:justify-start gap-3">
@@ -508,6 +496,27 @@
 
     </main>
 
+    <!-- Custom Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 transform scale-95 transition-transform duration-300">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-rose-100 text-rose-600 mb-4 text-xl select-none">
+                    ⚠️
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Delete Expense?</h3>
+                <p class="text-sm text-slate-500 mb-6">Are you sure you want to delete this expense? This action cannot be undone.</p>
+            </div>
+            <div class="flex gap-3">
+                <button id="modal-cancel-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 transition-all">
+                    Cancel
+                </button>
+                <button id="modal-confirm-btn" class="flex-1 py-3 px-4 rounded-xl font-bold text-sm bg-rose-600 hover:bg-rose-700 text-white transition-all shadow-md">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -529,28 +538,18 @@
             appId: "1:883916005228:web:c1a252831d94bf22af5d49"
         };
 
-        let currentTripId = localStorage.getItem('hatyai_trip_code');
-        if (!currentTripId) {
-            currentTripId = generateRandomSyncCode();
-            localStorage.setItem('hatyai_trip_code', currentTripId);
-        }
+        const currentTripId = 'HY-SHARED';
 
-        document.getElementById('display-sync-code').innerText = currentTripId;
+        // Targets for confirmation modal
+        let expenseToDelete = null;
+        let cardToRestore = null;
+        let bgToDelete = null;
 
         const stored = localStorage.getItem('localExpenses');
         if (stored) {
             try {
                 localExpenses = JSON.parse(stored);
             } catch(e) {}
-        }
-
-        function generateRandomSyncCode() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let result = 'HY-';
-            for (let i = 0; i < 4; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
         }
 
         function formatDateString(dateStr) {
@@ -567,6 +566,88 @@
             return dateStr;
         }
 
+        function attachSwipeListeners(card, expenseId) {
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let isSwiping = false;
+            let isHorizontalSwipe = false;
+            const bgDelete = document.getElementById(`bg-delete-${expenseId}`);
+            
+            const handleStart = (e) => {
+                isSwiping = true;
+                isHorizontalSwipe = false;
+                startX = e.touches ? e.touches[0].clientX : e.clientX;
+                startY = e.touches ? e.touches[0].clientY : e.clientY;
+                card.style.transition = 'none';
+            };
+            
+            const handleMove = (e) => {
+                if (!isSwiping) return;
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                const y = e.touches ? e.touches[0].clientY : e.clientY;
+                const diffX = x - startX;
+                const diffY = y - startY;
+                
+                if (!isHorizontalSwipe && Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+                    isHorizontalSwipe = true;
+                }
+                
+                if (e.touches && !isHorizontalSwipe) return;
+                
+                if (diffX < 0) {
+                    currentX = diffX;
+                    card.style.transform = `translateX(${diffX}px)`;
+                    
+                    if (bgDelete) {
+                        const progress = Math.min(Math.abs(diffX) / 120, 1);
+                        bgDelete.style.opacity = progress.toString();
+                        bgDelete.style.backgroundColor = `rgba(244, 63, 94, ${progress})`;
+                    }
+                }
+            };
+            
+            const handleEnd = () => {
+                if (!isSwiping) return;
+                isSwiping = false;
+                card.style.transition = 'transform 0.2s ease-out';
+                
+                if (currentX < -120) {
+                    // Lock swiped position visually
+                    card.style.transform = 'translateX(-120px)';
+                    if (bgDelete) bgDelete.style.opacity = '1';
+                    
+                    // Set deletion targets and trigger the confirmation modal
+                    expenseToDelete = expenseId;
+                    cardToRestore = card;
+                    bgToDelete = bgDelete;
+                    document.getElementById('delete-confirm-modal').classList.remove('hidden');
+                } else {
+                    card.style.transform = 'translateX(0px)';
+                    if (bgDelete) {
+                        bgDelete.style.opacity = '0';
+                    }
+                }
+                currentX = 0;
+            };
+            
+            card.addEventListener('touchstart', handleStart, { passive: true });
+            card.addEventListener('touchmove', handleMove, { passive: true });
+            card.addEventListener('touchend', handleEnd);
+            card.addEventListener('touchcancel', handleEnd);
+            
+            card.addEventListener('mousedown', handleStart);
+            const mouseMoveListener = (e) => {
+                if (isSwiping) handleMove(e);
+            };
+            const mouseUpListener = () => {
+                if (isSwiping) handleEnd();
+            };
+            
+            window.addEventListener('mousemove', mouseMoveListener);
+            window.addEventListener('mouseup', mouseUpListener);
+        }
+
         function renderExpenses(expenses) {
             const listContainer = document.getElementById('expenses-list');
             const totalThbEl = document.getElementById('total-thb');
@@ -575,7 +656,7 @@
             const filteredExpenses = expenses.filter(exp => exp.tripId === currentTripId);
 
             if (filteredExpenses.length === 0) {
-                listContainer.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm">No expenses logged yet for Sync Code: ${currentTripId}</div>`;
+                listContainer.innerHTML = `<div class="text-center py-8 text-gray-400 text-sm">No expenses logged yet.</div>`;
                 totalThbEl.innerText = "฿0";
                 totalMyrEl.innerText = "RM 0.00";
                 return;
@@ -612,39 +693,37 @@
                 totalMyr += amountMYR;
                 const formattedDate = expense.date ? formatDateString(expense.date) : 'No Date';
 
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "flex justify-between items-center bg-white p-3 rounded-lg border border-slate-100 shadow-sm text-sm";
-                itemDiv.innerHTML = `
-                    <div class="flex flex-col gap-1">
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <span class="text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-full">${expense.category}</span>
-                            <span class="font-bold text-slate-800">${expense.name}</span>
-                        </div>
-                        <span class="text-[10px] text-slate-500 font-semibold flex items-center gap-1">
-                            📅 ${formattedDate}
-                        </span>
+                const itemWrapper = document.createElement('div');
+                itemWrapper.className = "relative overflow-hidden rounded-lg shadow-sm border border-slate-100 mb-2 transition-all duration-300";
+                itemWrapper.innerHTML = `
+                    <div id="bg-delete-${expense.id}" class="absolute inset-0 bg-rose-500 text-white flex items-center justify-end px-6 font-bold text-xs select-none pointer-events-none opacity-0 transition-opacity duration-150">
+                        <span>Confirm Swipe to Delete 🗑️</span>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="text-right">
-                            <span class="font-bold text-slate-800 block">RM ${amountMYR.toFixed(2)}</span>
-                            <span class="text-xs text-slate-500 block">Original: ${displayOriginal}</span>
+                    <div id="card-swipe-${expense.id}" class="relative bg-white p-3 flex justify-between items-center transition-transform duration-200 ease-out cursor-grab active:cursor-grabbing select-none">
+                        <div class="flex flex-col gap-1 pointer-events-none">
+                            <div class="flex items-center gap-2 flex-wrap pointer-events-none">
+                                <span class="text-[10px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-full pointer-events-none">${expense.category}</span>
+                                <span class="font-bold text-slate-800 pointer-events-none">${expense.name}</span>
+                            </div>
+                            <span class="text-[10px] text-slate-500 font-semibold flex items-center gap-1 pointer-events-none">
+                                📅 ${formattedDate}
+                            </span>
                         </div>
-                        <button data-id="${expense.id}" class="delete-expense-btn text-rose-500 hover:text-rose-700 font-bold text-xs p-1">✕</button>
+                        <div class="text-right pointer-events-none">
+                            <span class="font-bold text-slate-800 block pointer-events-none">RM ${amountMYR.toFixed(2)}</span>
+                            <span class="text-xs text-slate-500 block pointer-events-none">Original: ${displayOriginal}</span>
+                        </div>
                     </div>
                 `;
-                listContainer.appendChild(itemDiv);
+                listContainer.appendChild(itemWrapper);
+
+                const swipeCard = document.getElementById(`card-swipe-${expense.id}`);
+                attachSwipeListeners(swipeCard, expense.id);
             });
 
             const totalThb = totalMyr * 7.8;
             totalThbEl.innerText = `฿${totalThb.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})}`;
             totalMyrEl.innerText = `RM ${totalMyr.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-
-            document.querySelectorAll('.delete-expense-btn').forEach(btn => {
-                btn.onclick = async (e) => {
-                    const id = e.target.getAttribute('data-id');
-                    await removeExpense(id);
-                };
-            });
         }
 
         async function removeExpense(id) {
@@ -736,27 +815,6 @@
             }
         };
 
-        window.connectToSyncCode = function() {
-            const codeInput = document.getElementById('sync-code-input');
-            const code = codeInput.value.trim().toUpperCase();
-            if (code && code.startsWith('HY-') && code.length === 7) {
-                currentTripId = code;
-                localStorage.setItem('hatyai_trip_code', currentTripId);
-                document.getElementById('display-sync-code').innerText = currentTripId;
-                codeInput.value = '';
-                
-                if (db && currentUser) {
-                    setupRealtimeListener();
-                } else {
-                    renderExpenses(localExpenses);
-                }
-            } else {
-                alert("Please enter a valid Sync Code in the format HY-XXXX");
-            }
-        };
-
-        document.getElementById('sync-code-btn').onclick = window.connectToSyncCode;
-
         function setupRealtimeListener() {
             if (expensesListener) expensesListener();
 
@@ -787,6 +845,48 @@
                 }
             );
         }
+
+        // Setup custom modal button interactions
+        document.getElementById('modal-cancel-btn').addEventListener('click', () => {
+            document.getElementById('delete-confirm-modal').classList.add('hidden');
+            if (cardToRestore) {
+                cardToRestore.style.transition = 'transform 0.2s ease-out';
+                cardToRestore.style.transform = 'translateX(0px)';
+                if (bgToDelete) {
+                    bgToDelete.style.opacity = '0';
+                }
+            }
+            expenseToDelete = null;
+            cardToRestore = null;
+            bgToDelete = null;
+        });
+
+        document.getElementById('modal-confirm-btn').addEventListener('click', async () => {
+            if (expenseToDelete && cardToRestore) {
+                const targetCard = cardToRestore;
+                const targetBg = bgToDelete;
+                const targetId = expenseToDelete;
+
+                targetCard.style.transition = 'transform 0.3s ease-out';
+                targetCard.style.transform = 'translateX(-100%)';
+                if (targetBg) targetBg.style.opacity = '1';
+
+                const wrapper = targetCard.parentElement;
+                if (wrapper) {
+                    wrapper.style.transition = 'all 0.3s ease-out';
+                    wrapper.style.maxHeight = '0px';
+                    wrapper.style.margin = '0px';
+                    wrapper.style.padding = '0px';
+                    wrapper.style.opacity = '0';
+                }
+
+                document.getElementById('delete-confirm-modal').classList.add('hidden');
+
+                setTimeout(async () => {
+                    await removeExpense(targetId);
+                }, 300);
+            }
+        });
 
         async function initStorage() {
             const statusEl = document.getElementById('sync-status');
